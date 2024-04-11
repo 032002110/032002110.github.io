@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>first_o_blog | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="回顾今天遇到的问题以及学习的内容1.1mac文件存储此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹 用open .打开。在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台 1.2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="first_o_blog">
+<meta property="og:url" content="http://example.com/2024/04/11/first-o-blog/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="回顾今天遇到的问题以及学习的内容1.1mac文件存储此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹 用open .打开。在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台 1.2">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cn-beijing-data.aliyundrive.net/VrPUCcGk%2F995876461%2F6617937e54e6fa27cba649bd803ea213b13ee520%2F6617937ef787b93058424c259fd3a9fa70a8bc25?security-token=CAIS8gF1q6Ft5B2yfSjIr5fSCunfrKpSjveGZU/L1kYkNP9uvfzAqTz2IHhMf3NpBOkZvvQ1lGlU6/calq5rR4QAXlDfNQ6dfWHSqFHPWZHInuDox55m4cTXNAr+Ihr/29CoEIedZdjBe/CrRknZnytou9XTfimjWFrXWv/gy+QQDLItUxK/cCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF+97DRbG/dNRpMZtFVNO44fd7bKKp0lQLs0ARrv4r1fMUqW2X543AUgFLhy2KKMPY99xpFgh9a7j0iCbSGyUu/hqAAXAtBqZXdIc5C2vd01DGdvVESjwWRxfcUjDJrFQpTVuRQElNqiTTGp3nWSqTScoqfUL0NLUIOihVtsdg/nASTmvHQ2YQWWI+bFenjgDy9KUZoGtKqnqm3fpjMkBW3/keA4yq80UQQN80ecW5x5e8NRjmnPEYSHWvkSfJm9kihqcGIAA=&x-oss-access-key-id=STS.NTgASkAus95mgiz2Fq8pBR9kK&x-oss-additional-headers=referer&x-oss-expires=1712822020&x-oss-process=image/resize,w_1920/format,avif&x-oss-signature=T7uwCrRWHQVuD1dj8RkDgShcycPkVQyvxorSpMp9q6I=&x-oss-signature-version=OSS2">
+<meta property="article:published_time" content="2024-04-11T06:52:58.000Z">
+<meta property="article:modified_time" content="2024-04-11T07:41:46.375Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cn-beijing-data.aliyundrive.net/VrPUCcGk%2F995876461%2F6617937e54e6fa27cba649bd803ea213b13ee520%2F6617937ef787b93058424c259fd3a9fa70a8bc25?security-token=CAIS8gF1q6Ft5B2yfSjIr5fSCunfrKpSjveGZU/L1kYkNP9uvfzAqTz2IHhMf3NpBOkZvvQ1lGlU6/calq5rR4QAXlDfNQ6dfWHSqFHPWZHInuDox55m4cTXNAr+Ihr/29CoEIedZdjBe/CrRknZnytou9XTfimjWFrXWv/gy+QQDLItUxK/cCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF+97DRbG/dNRpMZtFVNO44fd7bKKp0lQLs0ARrv4r1fMUqW2X543AUgFLhy2KKMPY99xpFgh9a7j0iCbSGyUu/hqAAXAtBqZXdIc5C2vd01DGdvVESjwWRxfcUjDJrFQpTVuRQElNqiTTGp3nWSqTScoqfUL0NLUIOihVtsdg/nASTmvHQ2YQWWI+bFenjgDy9KUZoGtKqnqm3fpjMkBW3/keA4yq80UQQN80ecW5x5e8NRjmnPEYSHWvkSfJm9kihqcGIAA=&x-oss-access-key-id=STS.NTgASkAus95mgiz2Fq8pBR9kK&x-oss-additional-headers=referer&x-oss-expires=1712822020&x-oss-process=image/resize,w_1920/format,avif&x-oss-signature=T7uwCrRWHQVuD1dj8RkDgShcycPkVQyvxorSpMp9q6I=&x-oss-signature-version=OSS2">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-first-o-blog" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/11/first-o-blog/" class="article-date">
+  <time class="dt-published" datetime="2024-04-11T06:52:58.000Z" itemprop="datePublished">2024-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      first_o_blog
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="回顾今天遇到的问题以及学习的内容"><a href="#回顾今天遇到的问题以及学习的内容" class="headerlink" title="回顾今天遇到的问题以及学习的内容"></a>回顾今天遇到的问题以及学习的内容</h1><h2 id="1-1mac文件存储"><a href="#1-1mac文件存储" class="headerlink" title="1.1mac文件存储"></a>1.1mac文件存储</h2><h2 id="此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹-用open-打开。"><a href="#此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹-用open-打开。" class="headerlink" title="此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹 用open .打开。"></a>此前可能是习惯了window系统看不到磁盘，不知道在哪找我需要的文件，对终端命令也不熟悉。mac一是可以用访达，或者用终端命令先cd到指定文件夹 用open .打开。</h2><h2 id="在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台"><a href="#在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台" class="headerlink" title="在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台"></a>在写这个的时候因为我要展示一个图片又碰到了我之前遇到的问题，怎么让本地的截图展示上传到服务器，这里我再次借用qq到服务器然后发现还是本地，最后使用阿里云盘作为我的图片上传平台</h2><p><img src="https://cn-beijing-data.aliyundrive.net/VrPUCcGk%2F995876461%2F6617937e54e6fa27cba649bd803ea213b13ee520%2F6617937ef787b93058424c259fd3a9fa70a8bc25?security-token=CAIS8gF1q6Ft5B2yfSjIr5fSCunfrKpSjveGZU/L1kYkNP9uvfzAqTz2IHhMf3NpBOkZvvQ1lGlU6/calq5rR4QAXlDfNQ6dfWHSqFHPWZHInuDox55m4cTXNAr+Ihr/29CoEIedZdjBe/CrRknZnytou9XTfimjWFrXWv/gy+QQDLItUxK/cCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF+97DRbG/dNRpMZtFVNO44fd7bKKp0lQLs0ARrv4r1fMUqW2X543AUgFLhy2KKMPY99xpFgh9a7j0iCbSGyUu/hqAAXAtBqZXdIc5C2vd01DGdvVESjwWRxfcUjDJrFQpTVuRQElNqiTTGp3nWSqTScoqfUL0NLUIOihVtsdg/nASTmvHQ2YQWWI+bFenjgDy9KUZoGtKqnqm3fpjMkBW3/keA4yq80UQQN80ecW5x5e8NRjmnPEYSHWvkSfJm9kihqcGIAA=&x-oss-access-key-id=STS.NTgASkAus95mgiz2Fq8pBR9kK&x-oss-additional-headers=referer&x-oss-expires=1712822020&x-oss-process=image/resize,w_1920/format,avif&x-oss-signature=T7uwCrRWHQVuD1dj8RkDgShcycPkVQyvxorSpMp9q6I=&x-oss-signature-version=OSS2"></p>
+<h2 id="1-2github分支默认变更"><a href="#1-2github分支默认变更" class="headerlink" title="1.2github分支默认变更"></a>1.2github分支默认变更</h2><p>&#x2F;Users&#x2F;3c&#x2F;Library&#x2F;Containers&#x2F;com.tencent.qq&#x2F;Data&#x2F;Library&#x2F;Application Support&#x2F;QQ&#x2F;nt_qq_837c5f263baccb9f228f8bb1fc158316&#x2F;nt_data&#x2F;Pic&#x2F;2024-04&#x2F;Ori&#x2F;33df40893e6907f2a7c8177e61da9065.png</p>
+<h2 id="1-3遇到各种到权限问题"><a href="#1-3遇到各种到权限问题" class="headerlink" title="1.3遇到各种到权限问题"></a>1.3遇到各种到权限问题</h2><p>Error: EACCES: permission denied, mkdir ‘&#x2F;Users&#x2F;3c&#x2F;Myblog&#x2F;public&#x2F;2024&#x2F;04&#x2F;11&#x2F;demo’<br>    at async Object.mkdir (node:internal&#x2F;fs&#x2F;promises:859:10)</p>
+<p>Error: EACCES: permission denied, open ‘&#x2F;Users&#x2F;3c&#x2F;Myblog&#x2F;source&#x2F;_posts&#x2F;demo.md’<br>    at async open (node:internal&#x2F;fs&#x2F;promises:637:25)<br>    at async Object.writeFile (node:internal&#x2F;fs&#x2F;promises:1216:14)</p>
+<p>解决方法：</p>
+<ul>
+<li>使用chomd 更改权限</li>
+<li>使用sudo </li>
+<li>直接更改目标权限<br>&#x2F;Users&#x2F;3c&#x2F;Library&#x2F;Containers&#x2F;com.tencent.qq&#x2F;Data&#x2F;Library&#x2F;Application Support&#x2F;QQ&#x2F;nt_qq_837c5f263baccb9f228f8bb1fc158316&#x2F;nt_data&#x2F;Pic&#x2F;2024-04&#x2F;Ori&#x2F;1298f812ffe81297f4e68bb9217cdd40.png<br>&#x2F;Users&#x2F;3c&#x2F;Library&#x2F;Containers&#x2F;com.tencent.qq&#x2F;Data&#x2F;Library&#x2F;Application Support&#x2F;QQ&#x2F;nt_qq_837c5f263baccb9f228f8bb1fc158316&#x2F;nt_data&#x2F;Pic&#x2F;2024-04&#x2F;Ori&#x2F;542c7742e652457d092ed2970b4579dc.png</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/11/first-o-blog/" data-id="cluuwyreg0001csax6jssabtr" data-title="first_o_blog" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/04/11/demo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">demo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/11/first-o-blog/">first_o_blog</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/11/demo/">demo</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/11/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
