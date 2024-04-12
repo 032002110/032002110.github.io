@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Swift_01 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（!）强制解包：playerOne!.win(coins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift_01">
+<meta property="og:url" content="http://example.com/2024/04/12/Swift-01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（!）强制解包：playerOne!.win(coins">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-12T00:42:59.000Z">
+<meta property="article:modified_time" content="2024-04-12T07:21:14.955Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Swift-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/12/Swift-01/" class="article-date">
+  <time class="dt-published" datetime="2024-04-12T00:42:59.000Z" itemprop="datePublished">2024-04-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Swift_01
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1析构"><a href="#1-1析构" class="headerlink" title="1.1析构"></a>1.1析构</h2><p>不带参数和圆括号</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> &#123;</span><br><span class="line">    <span class="comment">// 执行析构过程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> playerOne: <span class="type">Player</span>? <span class="operator">=</span> <span class="type">Player</span>(coins: <span class="number">100</span>)</span><br><span class="line">因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（<span class="operator">!</span>）强制解包：</span><br><span class="line">playerOne<span class="operator">!</span>.win(coins: <span class="number">2_000</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="1-2并发"><a href="#1-2并发" class="headerlink" title="1.2并发"></a>1.2并发</h2><h3 id="1-2-1定义与调用"><a href="#1-2-1定义与调用" class="headerlink" title="1.2.1定义与调用"></a>1.2.1定义与调用</h3><p>在 Swift 中，一个异步函数可以交出它在某个线程上的运行权，这样另一个异步函数在这个函数被阻塞时就能获得此线程的运行权。但是，Swift并不能确定当异步函数恢复运行时其将在哪条线程上。<br>对于普通的同步函数或方法来说，它们只能运行到完成闭包、抛出错误或者永远不返回。异步函数或方法也能做到这三件事，但同时也可以在等待其他资源的时候挂起。在异步函数或者方法的函数体中，你可以标记其中的任意位置是可以被挂起的。<br><strong>async 关键字</strong>标记某个函数或者方法是异步的<br>对于那些既是异步又是 throwing 的函数，需要把 async 写在throws 关键字前边。<br><strong>await</strong>标记此处为悬点，，执行会被挂起直到异步方法返回</p>
+<h3 id="1-2-2并行的调用异步方法"><a href="#1-2-2并行的调用异步方法" class="headerlink" title="1.2.2并行的调用异步方法"></a>1.2.2并行的调用异步方法</h3><p><em>为了在调用异步函数的时候让它附近的代码并发执行，定义一个常量时，在let前添加async关键字，使用这个常量时添加await标记</em><br>例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> firstPhoto <span class="operator">=</span> <span class="keyword">await</span> downloadPhoto(named: photoNames[<span class="number">0</span>])</span><br><span class="line"><span class="keyword">let</span> secondPhoto <span class="operator">=</span> <span class="keyword">await</span> downloadPhoto(named: photoNames[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">let</span> thirdPhoto <span class="operator">=</span> <span class="keyword">await</span> downloadPhoto(named: photoNames[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">let</span> photos <span class="operator">=</span> [firstPhoto, secondPhoto, thirdPhoto]</span><br><span class="line">show(photos)</span><br></pre></td></tr></table></figure>
+<p>改为</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> firstPhoto <span class="operator">=</span> downloadPhoto(named: photoNames[<span class="number">0</span>])</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> secondPhoto <span class="operator">=</span> downloadPhoto(named: photoNames[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> thirdPhoto <span class="operator">=</span> downloadPhoto(named: photoNames[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">let</span> photos <span class="operator">=</span> <span class="keyword">await</span> [firstPhoto, secondPhoto, thirdPhoto]</span><br><span class="line">show(photos)</span><br></pre></td></tr></table></figure>
+<p>短时间内并不需要异步函数的结果时，需要使用 async-let 来调用异步函数。这样产生的任务是并发的。</p>
+<h3 id="1-2-3Actors"><a href="#1-2-3Actors" class="headerlink" title="1.2.3Actors"></a>1.2.3Actors</h3><p>使用任务将程序氛围孤立和并发的部分<br>actor 在同一时间只允许一个任务访问它的可变状态，这使得多个任务中的代码与一个 actor 交互时更加安全。<br>例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">actor</span> <span class="title class_">TemperatureLogger</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> label: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> measurements: [<span class="type">Int</span>]</span><br><span class="line">    <span class="keyword">private(set)</span> <span class="keyword">var</span> max: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">label</span>: <span class="type">String</span>, <span class="params">measurement</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.label <span class="operator">=</span> label</span><br><span class="line">        <span class="keyword">self</span>.measurements <span class="operator">=</span> [measurement]</span><br><span class="line">        <span class="keyword">self</span>.max <span class="operator">=</span> measurement</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>避免访问measurement时候，此时正在更新，使得得到错误的最大值</p>
+<h2 id="2-1计算机demo"><a href="#2-1计算机demo" class="headerlink" title="2.1计算机demo"></a>2.1计算机demo</h2><h3 id="2-11报错"><a href="#2-11报错" class="headerlink" title="2.11报错"></a>2.11报错</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> result <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> num1 <span class="operator">=</span> <span class="type">Double</span>(number1),<span class="keyword">let</span> num2 <span class="operator">=</span> <span class="type">Double</span>(number2)</span><br><span class="line">result <span class="operator">=</span> num1 <span class="operator">+</span> num2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>&#x2F;Users&#x2F;3c&#x2F;Desktop&#x2F;demo&#x2F;demo_01.swiftpm&#x2F;ContentView.swift:45:31 Cannot assign value of type ‘Double’ to type ‘String’<br>错误信息表明不能直接将Double类型的值之间赋值给String类型的result，因为此时result初始值为空字符串</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/12/Swift-01/" data-id="cluwd8klm0000bsaxdzcrcgxm" data-title="Swift_01" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/04/11/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/12/Swift-01/">Swift_01</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/11/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/11/first-o-blog/">first_o_blog</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
