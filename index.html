@@ -69,6 +69,278 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-uikit-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/18/uikit-2/" class="article-date">
+  <time class="dt-published" datetime="2024-04-18T02:23:32.000Z" itemprop="datePublished">2024-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/18/uikit-2/">Uikit_2-Snipkit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><p>###1.0<br>No Xcode project found, please specify one<br>解决方法 应该在包含 .xcodeproj 文件夹的上一级目录中执行该pod init，而不是在 .xcodeproj 文件夹内部。</p>
+<p>###1.1<br>[!] The target <code>demo_12</code> is declared multiple times.</p>
+<p>&#x2F;&#x2F; Uncomment the next line to define a global platform for your project<br>&#x2F;&#x2F; platform :ios, ‘9.0’</p>
+<p>target ‘demo_12’ do<br>&#x2F;&#x2F;Comment the next line if you don’t want to use dynamic frameworks<br>  use_frameworks!</p>
+<p>  &#x2F;&#x2F; Pods for demo_12</p>
+<p>  target ‘demo_12Tests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; Pods for testing<br>  end</p>
+<p>  target ‘demo_12UITests’ do<br>    &#x2F;&#x2F; Pods for testing<br>  end</p>
+<p>end</p>
+<p>source ‘<a target="_blank" rel="noopener" href="https://github.com/CocoaPods/Specs.git">https://github.com/CocoaPods/Specs.git</a>‘</p>
+<p>platform :ios, ‘10.0’</p>
+<p>use_frameworks!</p>
+<p>target ‘demo_12’ do<br>    pod ‘SnapKit’, ‘~&gt; 3.0’<br>end<br>修改为<br>&#x2F;&#x2F; 指定源<br>source ‘<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git">https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git</a>‘</p>
+<p>&#x2F;&#x2F; 指定全局平台和版本<br>platform :ios, ‘12.0’</p>
+<p>&#x2F;&#x2F; 使用动态框架<br>use_frameworks!</p>
+<p>&#x2F;&#x2F; 主target配置<br>target ‘demo_31’ do<br>  &#x2F;&#x2F; 主项目依赖的Pods<br>  pod ‘SnapKit’</p>
+<p>  &#x2F;&#x2F; 测试target配置<br>  target ‘demo_31Tests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; 测试依赖的Pods<br>  end</p>
+<p>  &#x2F;&#x2F; UI测试target配置<br>  target ‘demo_31UITests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; UI测试依赖的Pods<br>  end<br>end<br>###1.2<br>xcode15.2 默认 ENABLE_USER_SCRIPT_SANDBOXING &#x3D; YES 出现问题<br><img src="/mistake.png"><br>改为NO 即可</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/18/uikit-2/" data-id="clv4x2sl20005q5axbrwegc19" data-title="Uikit_2-Snipkit" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swift-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/16/swift-2/" class="article-date">
+  <time class="dt-published" datetime="2024-04-16T08:10:04.000Z" itemprop="datePublished">2024-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/16/swift-2/">swift_2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1-抽象工厂模式"><a href="#1-1-抽象工厂模式" class="headerlink" title="1.1 抽象工厂模式"></a>1.1 抽象工厂模式</h2><p>声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类</p>
+<ul>
+<li>适用场景<br>– 与多个不同系列相关产品交互<br>– 有一个基于一组抽象方法的类<br>例子<br>定义了一个区分用户要登入还是注册的枚举类<br>定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview<br>2️⃣根据登入还是注册返回auth控制器<br>定义了两个类学生authview工厂和教师authview工厂都实现了authview工厂协议<br>学生工厂第一个静态方法返回学生登入view或学生注册view<br>教师authview工厂返回教师登入view或学生注册view<br>定义了authview协议，该协议定义了视图接口用于处理授权操作，要求实现视图内容<br>可选的authaction闭包用于处理授权操作，描述视图<br>教师&#x2F;学生 登录&#x2F;注册视图这四个类实现了authview协议，这四个类都有authHander属性，这是一个可选闭包<br>用于处理视图中的按钮动作或其他按钮，可以用闭包执行相应操作<br>定义学生&#x2F;教师认证视图控制器继承认证控制器<br>定义一个私有类负责管理认证控制器的展示</li>
+</ul>
+<p><strong>分析一下：这个例子中AuthViewFactory充当了抽象工厂的角色，负责AuthView和AuthVIewController实例生产<br>学生和教师各自登入和注册视图构成不同产品族，学生认证工厂和教师认证工厂就是具体的工厂。替补方法AuthView和<br>AuthViewController类确保了学生和教师认证视图和控制器遵循相同规范。私有类作为客户端不直接依赖于具体产品类<br>降低系统耦合度。当需要增加新的用户类型，可以只增加新的具体工厂和产品类，保证了扩展性。</strong></p>
+<pre><code>static func authController(for type: AuthType) -&gt; AuthViewController &#123;
+    let controller = StudentAuthViewController(contentView: authView(for: type))
+    print(&quot;Student View Controller has been created&quot;)
+    return controller
+&#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/16/swift-2/" data-id="clv4x2sl20004q5axhz1c8gnk" data-title="swift_2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yolov7-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/yolov7-1/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T08:49:05.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/15/yolov7-1/">yolov7_1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><h2 id="1-1out-of-memory"><a href="#1-1out-of-memory" class="headerlink" title="1.1out of memory"></a>1.1out of memory</h2><p>原因：gpu内存溢出<br>解决方案：将batch 层降低或者租用云服务器</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/yolov7-1/" data-id="clv4x2sl30006q5axa92m32qm" data-title="yolov7_1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Uikit-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/Uikit-1/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T08:48:38.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/15/Uikit-1/">Uikit_1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="uikit-生命周期"><a href="#uikit-生命周期" class="headerlink" title="uikit 生命周期"></a>uikit 生命周期</h2><h3 id="1-1UIKit网格"><a href="#1-1UIKit网格" class="headerlink" title="1.1UIKit网格"></a>1.1UIKit网格</h3><p>相包含了一系列预定的样式与布局，无需大量编写自定义的css，内置了相应式配置，布局能够根据屏幕大小自动调整。提供了相应式宽度的类。</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.uk-width-x</td>
+<td>任何宽度并排</td>
+</tr>
+<tr>
+<td>.uk-width-small-x</td>
+<td>480px以上</td>
+</tr>
+<tr>
+<td>.uk-width-medium-x</td>
+<td>768px以上</td>
+</tr>
+<tr>
+<td>.uk-width-large-x</td>
+<td>960px以上</td>
+</tr>
+<tr>
+<td>网格间隔 .uk-grid-(x) x:small large medium collapse</td>
+<td></td>
+</tr>
+<tr>
+<td>居中    .uk-container-center</td>
+<td></td>
+</tr>
+<tr>
+<td>分割线   .uk-grid-divider</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-1碰到的问题如何用代码连接main中拖出的组件"><a href="#1-1碰到的问题如何用代码连接main中拖出的组件" class="headerlink" title="1.1碰到的问题如何用代码连接main中拖出的组件"></a>1.1碰到的问题如何用代码连接main中拖出的组件</h2><p>增加一个界面(快捷键contral+option+command+return），一个界面用contral➕左键拖动到另一个界面IBOutlet位置</p>
+<h2 id="1-2objc和IBAction区别"><a href="#1-2objc和IBAction区别" class="headerlink" title="1.2objc和IBAction区别"></a>1.2objc和IBAction区别</h2><p>编程方式创建响应事件: 当你完全在代码中创建 UI 和设定事件处理时（而不是通过 Interface Builder），需要使用 @objc 来注册事件处理函数。<br>自定义手势识别器行为: 当添加自定义手势到一个视图，并需要处理手势事件时。<br>定时器（Timer）的使用: 当设置定时器并指定回调方法时，也需要使用 @objc 标记该方法。</p>
+<p>label </p>
+<ul>
+<li>label.textAligment &#x3D; .right</li>
+<li>label.font &#x3D; UIFont.systemFont(ofSize:32)</li>
+</ul>
+<p><strong>约束</strong><br>界面元素之间或界面元素与其父视图之间关系。每个约束包括两个对象，一个属性，一个关系运算符<br>一个乘数与一个常量</p>
+<h1 id="UIKit-Auto-Layout-约束"><a href="#UIKit-Auto-Layout-约束" class="headerlink" title="UIKit Auto Layout 约束"></a>UIKit Auto Layout 约束</h1><h2 id="约束激活"><a href="#约束激活" class="headerlink" title="约束激活"></a>约束激活</h2><ul>
+<li>约束必须被 <strong>激活</strong> (<code>isActive = true</code>) 才能应用到布局中。</li>
+</ul>
+<h2 id="避免冲突和不明确性"><a href="#避免冲突和不明确性" class="headerlink" title="避免冲突和不明确性"></a>避免冲突和不明确性</h2><ul>
+<li><strong>冲突</strong>: 无法同时满足的约束，应该避免。</li>
+<li><strong>不明确性</strong>: 没有足够信息确定视图位置和大小的状态，应该避免。</li>
+</ul>
+<h2 id="约束优先级"><a href="#约束优先级" class="headerlink" title="约束优先级"></a>约束优先级</h2><ul>
+<li><code>UILayoutPriority</code> 范围从 1 (最低) 至 1000 (最高)。</li>
+</ul>
+<h2 id="translatesAutoresizingMaskIntoConstraints"><a href="#translatesAutoresizingMaskIntoConstraints" class="headerlink" title="translatesAutoresizingMaskIntoConstraints"></a><code>translatesAutoresizingMaskIntoConstraints</code></h2><ul>
+<li>默认为 <code>true</code>。</li>
+<li>使用 Auto Layout 时设置为 <code>false</code>。</li>
+</ul>
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><ul>
+<li>简化约束创建，例如 <code>view.leadingAnchor.constraint(equalTo: superView.leadingAnchor)</code>。</li>
+</ul>
+<h2 id="Visual-Format-Language-VFL"><a href="#Visual-Format-Language-VFL" class="headerlink" title="Visual Format Language (VFL)"></a>Visual Format Language (VFL)</h2><ul>
+<li>文字描述布局，能在一行中描述复杂布局。</li>
+</ul>
+<h2 id="Interface-Builder-IB"><a href="#Interface-Builder-IB" class="headerlink" title="Interface Builder (IB)"></a>Interface Builder (IB)</h2><p>Interface Builder 是 Xcode 中的一个可视化布局工具，它允许开发者通过拖拽的方式来创建用户界面(UI)的约束。以下是 Interface Builder 的一些主要功能：</p>
+<h3 id="Resolve-Auto-Layout-Issues"><a href="#Resolve-Auto-Layout-Issues" class="headerlink" title="Resolve Auto Layout Issues"></a>Resolve Auto Layout Issues</h3><ul>
+<li><strong>Reset to Suggested Constraints</strong><ul>
+<li>该功能可以重置选定视图的所有约束，并根据 Xcode 的推荐为该视图添加一组新的约束。它会根据视图的当前大小和位置，以及它与父视图或其他视图的关系，生成一组合理的约束。</li>
+</ul>
+</li>
+<li><strong>Add Missing Constraints</strong><ul>
+<li>此功能可以自动为视图添加所需的约束，以确保在不同屏幕尺寸上的一致性。它会根据视图的当前布局推断出缺失的约束，但生成的约束可能不是最优的，因此需要检查生成的约束并加以调整。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Add-New-Constraints"><a href="#Add-New-Constraints" class="headerlink" title="Add New Constraints"></a>Add New Constraints</h3><ul>
+<li><strong>Add New Constraints</strong><ul>
+<li>你可以为选定的视图添加新的约束，例如设置顶部、底部、左侧、右侧的边距，以及视图的宽度和高度。这些约束有助于确保视图在不同设备和屏幕方向上保持一致的布局。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Align"><a href="#Align" class="headerlink" title="Align"></a>Align</h3><ul>
+<li><strong>Align</strong><ul>
+<li>Interface Builder 提供了一系列对齐工具，允许你对齐两个或多个视图。例如，你可以使它们的顶部、底部、中心线或基线对齐，以创建一个整洁且一致的用户界面。</li>
+</ul>
+</li>
+</ul>
+<h2 id="安全区-Safe-Area"><a href="#安全区-Safe-Area" class="headerlink" title="安全区 (Safe Area)"></a>安全区 (Safe Area)</h2><ul>
+<li>考虑了诸如导航栏、标签栏等 UI 元素的边界区域。<br>NSLayoutConstraint :用于表示两个视图之间关系</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/Uikit-1/" data-id="clv4x2sl10001q5axe7q87i08" data-title="Uikit_1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-demo_calculate" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/04/15/demo_calculate/" class="article-date">
@@ -110,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/15/demo_calculate/" data-id="clv0pfkb10000naaxhrkz15xd" data-title="calculate_demo" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/04/15/demo_calculate/" data-id="clv4x2sl10002q5axg4bqer5i" data-title="calculate_demo" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -170,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/12/Swift-01/" data-id="clv0pfkb30001naax0kp47qbf" data-title="Swift_01" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/04/12/Swift-01/" data-id="clv4x2sky0000q5ax1giyh8ma" data-title="Swift_01" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -221,7 +493,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/11/hello-world/" data-id="clv0pfkb40002naax37afd7op" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/04/11/hello-world/" data-id="clv4x2sl20003q5axdwqd0myr" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -272,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/11/first-o-blog/" data-id="clv0pfkb40003naax7ugfheb2" data-title="first_o_blog" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/04/11/first-o-blog/" data-id="clv4x2sl30007q5ax2nkdh1by" data-title="first_o_blog" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -315,19 +587,23 @@
       <ul>
         
           <li>
+            <a href="/2024/04/18/uikit-2/">Uikit_2-Snipkit</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/16/swift-2/">swift_2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/15/yolov7-1/">yolov7_1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/15/Uikit-1/">Uikit_1</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/15/demo_calculate/">calculate_demo</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/12/Swift-01/">Swift_01</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/11/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/11/first-o-blog/">first_o_blog</a>
           </li>
         
       </ul>

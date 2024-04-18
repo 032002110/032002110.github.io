@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>swift_2 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户要登入还是注册的枚举类定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview2️⃣根据登入还是注册返回auth控制器定义了两个类学生authview工厂和教师authview">
+<meta property="og:type" content="article">
+<meta property="og:title" content="swift_2">
+<meta property="og:url" content="http://example.com/2024/04/16/swift-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户要登入还是注册的枚举类定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview2️⃣根据登入还是注册返回auth控制器定义了两个类学生authview工厂和教师authview">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-16T08:10:04.000Z">
+<meta property="article:modified_time" content="2024-04-16T10:02:56.230Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-swift-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/16/swift-2/" class="article-date">
+  <time class="dt-published" datetime="2024-04-16T08:10:04.000Z" itemprop="datePublished">2024-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      swift_2
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1-抽象工厂模式"><a href="#1-1-抽象工厂模式" class="headerlink" title="1.1 抽象工厂模式"></a>1.1 抽象工厂模式</h2><p>声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类</p>
+<ul>
+<li>适用场景<br>– 与多个不同系列相关产品交互<br>– 有一个基于一组抽象方法的类<br>例子<br>定义了一个区分用户要登入还是注册的枚举类<br>定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview<br>2️⃣根据登入还是注册返回auth控制器<br>定义了两个类学生authview工厂和教师authview工厂都实现了authview工厂协议<br>学生工厂第一个静态方法返回学生登入view或学生注册view<br>教师authview工厂返回教师登入view或学生注册view<br>定义了authview协议，该协议定义了视图接口用于处理授权操作，要求实现视图内容<br>可选的authaction闭包用于处理授权操作，描述视图<br>教师&#x2F;学生 登录&#x2F;注册视图这四个类实现了authview协议，这四个类都有authHander属性，这是一个可选闭包<br>用于处理视图中的按钮动作或其他按钮，可以用闭包执行相应操作<br>定义学生&#x2F;教师认证视图控制器继承认证控制器<br>定义一个私有类负责管理认证控制器的展示</li>
+</ul>
+<p><strong>分析一下：这个例子中AuthViewFactory充当了抽象工厂的角色，负责AuthView和AuthVIewController实例生产<br>学生和教师各自登入和注册视图构成不同产品族，学生认证工厂和教师认证工厂就是具体的工厂。替补方法AuthView和<br>AuthViewController类确保了学生和教师认证视图和控制器遵循相同规范。私有类作为客户端不直接依赖于具体产品类<br>降低系统耦合度。当需要增加新的用户类型，可以只增加新的具体工厂和产品类，保证了扩展性。</strong></p>
+<pre><code>static func authController(for type: AuthType) -&gt; AuthViewController &#123;
+    let controller = StudentAuthViewController(contentView: authView(for: type))
+    print(&quot;Student View Controller has been created&quot;)
+    return controller
+&#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/16/swift-2/" data-id="clv4x2sl20004q5axhz1c8gnk" data-title="swift_2" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/18/uikit-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Uikit_2-Snipkit
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/15/yolov7-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">yolov7_1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/18/uikit-2/">Uikit_2-Snipkit</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/16/swift-2/">swift_2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/15/yolov7-1/">yolov7_1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/15/Uikit-1/">Uikit_1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/15/demo_calculate/">calculate_demo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
