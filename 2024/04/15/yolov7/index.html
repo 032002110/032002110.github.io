@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>yolov7 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="报错1.1out of memory原因：gpu内存溢出解决方案：将batch 层降低或者租用云服务器 2.1损失函数pretrained模块加载预选模型 ckpt（网络结构，参数值）将输出层做变换 model输出累加梯度（我的batch为2，gpu性能不好) nbs为64,相当于执行64次之后得到一个累加梯度，相等于间接梯度下降ema：vt &#x3D; 斜塔t异常点，batch点太少 优化方向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolov7">
+<meta property="og:url" content="http://example.com/2024/04/15/yolov7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="报错1.1out of memory原因：gpu内存溢出解决方案：将batch 层降低或者租用云服务器 2.1损失函数pretrained模块加载预选模型 ckpt（网络结构，参数值）将输出层做变换 model输出累加梯度（我的batch为2，gpu性能不好) nbs为64,相当于执行64次之后得到一个累加梯度，相等于间接梯度下降ema：vt &#x3D; 斜塔t异常点，batch点太少 优化方向">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-15T08:49:05.000Z">
+<meta property="article:modified_time" content="2024-04-29T00:33:19.435Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-yolov7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/yolov7/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T08:49:05.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      yolov7
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><h2 id="1-1out-of-memory"><a href="#1-1out-of-memory" class="headerlink" title="1.1out of memory"></a>1.1out of memory</h2><p>原因：gpu内存溢出<br>解决方案：将batch 层降低或者租用云服务器</p>
+<h2 id="2-1损失函数"><a href="#2-1损失函数" class="headerlink" title="2.1损失函数"></a>2.1损失函数</h2><p>pretrained模块<br>加载预选模型 ckpt（网络结构，参数值）<br>将输出层做变换 model输出<br>累加梯度（我的batch为2，gpu性能不好) nbs为64,相当于执行64次之后得到一个累加梯度，相等于间接梯度下降<br>ema：vt &#x3D; 斜塔t<br>异常点，batch点太少</p>
+<h1 id="优化方向"><a href="#优化方向" class="headerlink" title="优化方向"></a>优化方向</h1><h2 id="2-1多任务识别"><a href="#2-1多任务识别" class="headerlink" title="2.1多任务识别"></a>2.1多任务识别</h2><p>既能够识别遥感图也同时识别自然图像<br>遥感图像的特点：针对遥感图像中的小目标分布不定并且其特征表现能力不足从而在检测过程中容易存在漏检、误检的现象。遥感图像中的目标种类繁多，形状差异巨大，大量长宽比异常的狭长目标（如桥梁、道路等），会脱离检测算法的形状检测范围[1]。小目标的形状表征能力较弱，不能准确的反映局部细节信息，导致检测精度较低。<br>##实现方式</p>
+<h3 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h3><p>在分别自然图像和船舶图像的数据集进行融合前，除了目标类别外，为每个图像加上一个额外标签用于指示是遥感图像还是自然图像</p>
+<h3 id="自定义数据加载器"><a href="#自定义数据加载器" class="headerlink" title="自定义数据加载器"></a>自定义数据加载器</h3><p>创建一个自定义数据加载器，该加载器能够读取图像数据以及相应标签，包括目标类别和图像类型</p>
+<h3 id="更改中"><a href="#更改中" class="headerlink" title="更改中"></a>更改中</h3><h3 id="选择损失函数"><a href="#选择损失函数" class="headerlink" title="选择损失函数"></a>选择损失函数</h3><p>在neck层进行一个分支任务训练，根据当前批次动态选择哪个损失函数</p>
+<h3 id="对于遥感图像"><a href="#对于遥感图像" class="headerlink" title="对于遥感图像"></a>对于遥感图像</h3><h3 id="2-11改进方式一"><a href="#2-11改进方式一" class="headerlink" title="2.11改进方式一"></a>2.11改进方式一</h3><p>通过引入混合注意力模块ACmix加强网络对于小目标检测的敏感度，以提升对小目标的检测精度；使用WIOU损失函数来优化原网络中的损失函数，</p>
+<h3 id="2-12改进方式二"><a href="#2-12改进方式二" class="headerlink" title="2.12改进方式二"></a>2.12改进方式二</h3><p>使用MPDIoU替换原模型中的CIoU来优化损失函数，以适应遥感图像的尺度变化</p>
+<h3 id="2-13改进方式三"><a href="#2-13改进方式三" class="headerlink" title="2.13改进方式三"></a>2.13改进方式三</h3><p>设计了一种注意力多尺度特征增强(AMSFE)模块，用于扩展主干网络输出特征的感受野，以加强网络对尺度变化大目标的特征表征能力引入旋转边界框损失函数，以获取任意朝向物体的精确位置信息，能够适应遥感图像中多尺度和复杂背景的目标检测任务。</p>
+<h3 id="对于自然图像"><a href="#对于自然图像" class="headerlink" title="对于自然图像"></a>对于自然图像</h3><p>交叉熵损失（Cross-Entropy Loss）：<br>交叉熵损失是分类任务中最常用的损失函数之一。<br>它通过衡量预测概率分布与真实概率分布之间的差异来优化模型。<br>在自然图像分类或识别任务中，交叉熵损失通常能够取得良好的效果。<br>Focal Loss：<br>Focal Loss 是一种设计来解决类别不平衡问题的损失函数，特别是在目标检测领域如RetinaNet中使用。<br>如果自然图像数据集中存在类别不平衡问题（例如，背景类别远多于目标类别），Focal Loss 可以帮助模型更关注于少数类别，从而提高识别性能。</p>
+<p>[1]聂光涛，黄华，光学遥感图像目标检测算法综述[J].自动化化学报，2021,47(08):1749-1768.DOI:10.16383&#x2F;j.aas.c200596</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/yolov7/" data-id="clvk8bt3r0000stax5xyp306u" data-title="yolov7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/16/swift-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          swift_2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/15/Uikit-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Uikit_1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/">Xcode断点</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/23/Swift-03/">Swift_03</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/22/error-1/">error_1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
