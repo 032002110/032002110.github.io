@@ -69,6 +69,237 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-yolov7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/yolov7/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T08:49:05.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/15/yolov7/">yolov7</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><h2 id="1-1out-of-memory"><a href="#1-1out-of-memory" class="headerlink" title="1.1out of memory"></a>1.1out of memory</h2><p>原因：gpu内存溢出<br>解决方案：将batch 层降低或者租用云服务器</p>
+<h2 id="2-1损失函数"><a href="#2-1损失函数" class="headerlink" title="2.1损失函数"></a>2.1损失函数</h2><p>pretrained模块<br>加载预选模型 ckpt（网络结构，参数值）<br>将输出层做变换 model输出<br>累加梯度（我的batch为2，gpu性能不好) nbs为64,相当于执行64次之后得到一个累加梯度，相等于间接梯度下降<br>ema：vt &#x3D; 斜塔t<br>异常点，batch点太少</p>
+<h1 id="优化方向"><a href="#优化方向" class="headerlink" title="优化方向"></a>优化方向</h1><h2 id="2-1多任务识别"><a href="#2-1多任务识别" class="headerlink" title="2.1多任务识别"></a>2.1多任务识别</h2><p>既能够识别遥感图也同时识别自然图像<br>遥感图像的特点：针对遥感图像中的小目标分布不定并且其特征表现能力不足从而在检测过程中容易存在漏检、误检的现象。遥感图像中的目标种类繁多，形状差异巨大，大量长宽比异常的狭长目标（如桥梁、道路等），会脱离检测算法的形状检测范围[1]。小目标的形状表征能力较弱，不能准确的反映局部细节信息，导致检测精度较低。<br>##实现方式</p>
+<h3 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h3><p>在分别自然图像和船舶图像的数据集进行融合前，除了目标类别外，为每个图像加上一个额外标签用于指示是遥感图像还是自然图像</p>
+<h3 id="自定义数据加载器"><a href="#自定义数据加载器" class="headerlink" title="自定义数据加载器"></a>自定义数据加载器</h3><p>创建一个自定义数据加载器，该加载器能够读取图像数据以及相应标签，包括目标类别和图像类型</p>
+<h3 id="更改中"><a href="#更改中" class="headerlink" title="更改中"></a>更改中</h3><h3 id="选择损失函数"><a href="#选择损失函数" class="headerlink" title="选择损失函数"></a>选择损失函数</h3><p>在neck层进行一个分支任务训练，根据当前批次动态选择哪个损失函数</p>
+<h3 id="对于遥感图像"><a href="#对于遥感图像" class="headerlink" title="对于遥感图像"></a>对于遥感图像</h3><h3 id="2-11改进方式一"><a href="#2-11改进方式一" class="headerlink" title="2.11改进方式一"></a>2.11改进方式一</h3><p>通过引入混合注意力模块ACmix加强网络对于小目标检测的敏感度，以提升对小目标的检测精度；使用WIOU损失函数来优化原网络中的损失函数，</p>
+<h3 id="2-12改进方式二"><a href="#2-12改进方式二" class="headerlink" title="2.12改进方式二"></a>2.12改进方式二</h3><p>使用MPDIoU替换原模型中的CIoU来优化损失函数，以适应遥感图像的尺度变化</p>
+<h3 id="2-13改进方式三"><a href="#2-13改进方式三" class="headerlink" title="2.13改进方式三"></a>2.13改进方式三</h3><p>设计了一种注意力多尺度特征增强(AMSFE)模块，用于扩展主干网络输出特征的感受野，以加强网络对尺度变化大目标的特征表征能力引入旋转边界框损失函数，以获取任意朝向物体的精确位置信息，能够适应遥感图像中多尺度和复杂背景的目标检测任务。</p>
+<h3 id="对于自然图像"><a href="#对于自然图像" class="headerlink" title="对于自然图像"></a>对于自然图像</h3><p>交叉熵损失（Cross-Entropy Loss）：<br>交叉熵损失是分类任务中最常用的损失函数之一。<br>它通过衡量预测概率分布与真实概率分布之间的差异来优化模型。<br>在自然图像分类或识别任务中，交叉熵损失通常能够取得良好的效果。<br>Focal Loss：<br>Focal Loss 是一种设计来解决类别不平衡问题的损失函数，特别是在目标检测领域如RetinaNet中使用。<br>如果自然图像数据集中存在类别不平衡问题（例如，背景类别远多于目标类别），Focal Loss 可以帮助模型更关注于少数类别，从而提高识别性能。</p>
+<p>[1]聂光涛，黄华，光学遥感图像目标检测算法综述[J].自动化化学报，2021,47(08):1749-1768.DOI:10.16383&#x2F;j.aas.c200596</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/yolov7/" data-id="clvk8bt3r0000stax5xyp306u" data-title="yolov7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Uikit-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/Uikit-1/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T08:48:38.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/15/Uikit-1/">Uikit_1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="uikit-生命周期"><a href="#uikit-生命周期" class="headerlink" title="uikit 生命周期"></a>uikit 生命周期</h2><h3 id="1-1UIKit网格"><a href="#1-1UIKit网格" class="headerlink" title="1.1UIKit网格"></a>1.1UIKit网格</h3><p>相包含了一系列预定的样式与布局，无需大量编写自定义的css，内置了相应式配置，布局能够根据屏幕大小自动调整。提供了相应式宽度的类。</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.uk-width-x</td>
+<td>任何宽度并排</td>
+</tr>
+<tr>
+<td>.uk-width-small-x</td>
+<td>480px以上</td>
+</tr>
+<tr>
+<td>.uk-width-medium-x</td>
+<td>768px以上</td>
+</tr>
+<tr>
+<td>.uk-width-large-x</td>
+<td>960px以上</td>
+</tr>
+<tr>
+<td>网格间隔 .uk-grid-(x) x:small large medium collapse</td>
+<td></td>
+</tr>
+<tr>
+<td>居中    .uk-container-center</td>
+<td></td>
+</tr>
+<tr>
+<td>分割线   .uk-grid-divider</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-1碰到的问题如何用代码连接main中拖出的组件"><a href="#1-1碰到的问题如何用代码连接main中拖出的组件" class="headerlink" title="1.1碰到的问题如何用代码连接main中拖出的组件"></a>1.1碰到的问题如何用代码连接main中拖出的组件</h2><p>增加一个界面(快捷键contral+option+command+return），一个界面用contral➕左键拖动到另一个界面IBOutlet位置</p>
+<h2 id="1-2objc和IBAction区别"><a href="#1-2objc和IBAction区别" class="headerlink" title="1.2objc和IBAction区别"></a>1.2objc和IBAction区别</h2><p>编程方式创建响应事件: 当你完全在代码中创建 UI 和设定事件处理时（而不是通过 Interface Builder），需要使用 @objc 来注册事件处理函数。<br>自定义手势识别器行为: 当添加自定义手势到一个视图，并需要处理手势事件时。<br>定时器（Timer）的使用: 当设置定时器并指定回调方法时，也需要使用 @objc 标记该方法。</p>
+<p>label </p>
+<ul>
+<li>label.textAligment &#x3D; .right</li>
+<li>label.font &#x3D; UIFont.systemFont(ofSize:32)</li>
+</ul>
+<p><strong>约束</strong><br>界面元素之间或界面元素与其父视图之间关系。每个约束包括两个对象，一个属性，一个关系运算符<br>一个乘数与一个常量</p>
+<h1 id="UIKit-Auto-Layout-约束"><a href="#UIKit-Auto-Layout-约束" class="headerlink" title="UIKit Auto Layout 约束"></a>UIKit Auto Layout 约束</h1><h2 id="约束激活"><a href="#约束激活" class="headerlink" title="约束激活"></a>约束激活</h2><ul>
+<li>约束必须被 <strong>激活</strong> (<code>isActive = true</code>) 才能应用到布局中。</li>
+</ul>
+<h2 id="避免冲突和不明确性"><a href="#避免冲突和不明确性" class="headerlink" title="避免冲突和不明确性"></a>避免冲突和不明确性</h2><ul>
+<li><strong>冲突</strong>: 无法同时满足的约束，应该避免。</li>
+<li><strong>不明确性</strong>: 没有足够信息确定视图位置和大小的状态，应该避免。</li>
+</ul>
+<h2 id="约束优先级"><a href="#约束优先级" class="headerlink" title="约束优先级"></a>约束优先级</h2><ul>
+<li><code>UILayoutPriority</code> 范围从 1 (最低) 至 1000 (最高)。</li>
+</ul>
+<h2 id="translatesAutoresizingMaskIntoConstraints"><a href="#translatesAutoresizingMaskIntoConstraints" class="headerlink" title="translatesAutoresizingMaskIntoConstraints"></a><code>translatesAutoresizingMaskIntoConstraints</code></h2><ul>
+<li>默认为 <code>true</code>。</li>
+<li>使用 Auto Layout 时设置为 <code>false</code>。</li>
+</ul>
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><ul>
+<li>简化约束创建，例如 <code>view.leadingAnchor.constraint(equalTo: superView.leadingAnchor)</code>。</li>
+</ul>
+<h2 id="Visual-Format-Language-VFL"><a href="#Visual-Format-Language-VFL" class="headerlink" title="Visual Format Language (VFL)"></a>Visual Format Language (VFL)</h2><ul>
+<li>文字描述布局，能在一行中描述复杂布局。</li>
+</ul>
+<h2 id="Interface-Builder-IB"><a href="#Interface-Builder-IB" class="headerlink" title="Interface Builder (IB)"></a>Interface Builder (IB)</h2><p>Interface Builder 是 Xcode 中的一个可视化布局工具，它允许开发者通过拖拽的方式来创建用户界面(UI)的约束。以下是 Interface Builder 的一些主要功能：</p>
+<h3 id="Resolve-Auto-Layout-Issues"><a href="#Resolve-Auto-Layout-Issues" class="headerlink" title="Resolve Auto Layout Issues"></a>Resolve Auto Layout Issues</h3><ul>
+<li><strong>Reset to Suggested Constraints</strong><ul>
+<li>该功能可以重置选定视图的所有约束，并根据 Xcode 的推荐为该视图添加一组新的约束。它会根据视图的当前大小和位置，以及它与父视图或其他视图的关系，生成一组合理的约束。</li>
+</ul>
+</li>
+<li><strong>Add Missing Constraints</strong><ul>
+<li>此功能可以自动为视图添加所需的约束，以确保在不同屏幕尺寸上的一致性。它会根据视图的当前布局推断出缺失的约束，但生成的约束可能不是最优的，因此需要检查生成的约束并加以调整。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Add-New-Constraints"><a href="#Add-New-Constraints" class="headerlink" title="Add New Constraints"></a>Add New Constraints</h3><ul>
+<li><strong>Add New Constraints</strong><ul>
+<li>你可以为选定的视图添加新的约束，例如设置顶部、底部、左侧、右侧的边距，以及视图的宽度和高度。这些约束有助于确保视图在不同设备和屏幕方向上保持一致的布局。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Align"><a href="#Align" class="headerlink" title="Align"></a>Align</h3><ul>
+<li><strong>Align</strong><ul>
+<li>Interface Builder 提供了一系列对齐工具，允许你对齐两个或多个视图。例如，你可以使它们的顶部、底部、中心线或基线对齐，以创建一个整洁且一致的用户界面。</li>
+</ul>
+</li>
+</ul>
+<h2 id="安全区-Safe-Area"><a href="#安全区-Safe-Area" class="headerlink" title="安全区 (Safe Area)"></a>安全区 (Safe Area)</h2><ul>
+<li>考虑了诸如导航栏、标签栏等 UI 元素的边界区域。<br>NSLayoutConstraint :用于表示两个视图之间关系</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/Uikit-1/" data-id="clv4yyc8w0000kyaxeed235yt" data-title="Uikit_1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-demo_calculate" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/15/demo_calculate/" class="article-date">
+  <time class="dt-published" datetime="2024-04-15T02:14:52.000Z" itemprop="datePublished">2024-04-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/15/demo_calculate/">calculate_demo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1计算器demo"><a href="#1-1计算器demo" class="headerlink" title="1.1计算器demo"></a>1.1计算器demo</h2><h3 id="1-11报错"><a href="#1-11报错" class="headerlink" title="1.11报错"></a>1.11报错</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print（<span class="string">&quot;num3&quot;</span><span class="operator">+</span>complexNum3.real<span class="operator">+</span><span class="string">&quot; &quot;</span><span class="operator">+</span>complexNum3.imaginary<span class="operator">+</span><span class="string">&quot;i&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在Swift中，直接将Double 类型的值和字符串拼接会导致编译错误<br>修改后的代码</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;num3:&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="string">&quot; &quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="1-21代码优化"><a href="#1-21代码优化" class="headerlink" title="1.21代码优化"></a>1.21代码优化</h3><p>我目前解析方式假设了复数格式总为a+bi，如果用户输入a-bi，代码就会出错。，<br>不妨用正则表达式或类似正则表达式的模式进行匹配和提取实部和虚部<br>原代码</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> parts1 <span class="operator">=</span> number1.components(separatedBy: <span class="string">&quot;+&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> parts2 <span class="operator">=</span> number2.components(separatedBy: <span class="string">&quot;+&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> realPart1 <span class="operator">=</span> <span class="type">Double</span>(parts1[<span class="number">0</span>]) &#123;</span><br><span class="line">    <span class="keyword">let</span> imaginaryPart1String <span class="operator">=</span> <span class="type">String</span>(parts1[<span class="number">1</span>].dropLast())</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> imaginaryPart1 <span class="operator">=</span> <span class="type">Double</span>(imaginaryPart1String) &#123;</span><br><span class="line">        complexNum1 <span class="operator">=</span> <span class="type">ComplexNumber</span>(real: realPart1, imaginary: imaginaryPart1)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> realPart2 <span class="operator">=</span> <span class="type">Double</span>(parts2[<span class="number">0</span>]) &#123;</span><br><span class="line">    <span class="keyword">let</span> imaginaryPart2String <span class="operator">=</span> <span class="type">String</span>(parts2[<span class="number">1</span>].dropLast())</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> imaginaryPart2 <span class="operator">=</span> <span class="type">Double</span>(imaginaryPart2String) &#123;</span><br><span class="line">        complexNum2 <span class="operator">=</span> <span class="type">ComplexNumber</span>(real: realPart2, imaginary: imaginaryPart2)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更新后代码</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">parseComplexNumber</span>(<span class="keyword">_</span> <span class="params">numberString</span>: <span class="type">String</span>, <span class="keyword">_</span> <span class="params">complexNumber</span>: <span class="keyword">inout</span> <span class="type">ComplexNumber</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用正则表达式来匹配实部和虚部，可以处理正负号</span></span><br><span class="line">    <span class="keyword">let</span> complexRegex <span class="operator">=</span> <span class="string">&quot;([-+]?<span class="subst">\\</span>d+(<span class="subst">\\</span>.<span class="subst">\\</span>d+)?)([-+]?[0-9]+(<span class="subst">\\</span>.[0-9]+)?[ij])?&quot;</span></span><br><span class="line">    <span class="keyword">let</span> regex <span class="operator">=</span> <span class="keyword">try!</span> <span class="type">NSRegularExpression</span>(pattern: complexRegex)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> fullMatch <span class="operator">=</span> regex.firstMatch(in: numberString, options: [], range: <span class="type">NSRange</span>(numberString.startIndex<span class="operator">...</span>, in: numberString))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> match <span class="operator">=</span> fullMatch &#123;</span><br><span class="line">        <span class="comment">// 提取实部</span></span><br><span class="line">        <span class="keyword">let</span> realRange <span class="operator">=</span> <span class="type">Range</span>(match.range(at: <span class="number">1</span>), in: numberString)<span class="operator">!</span></span><br><span class="line">        <span class="keyword">let</span> realString <span class="operator">=</span> <span class="type">String</span>(numberString[realRange])</span><br><span class="line">        complexNumber.real <span class="operator">=</span> <span class="type">Double</span>(realString) <span class="operator">??</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 提取虚部，如果存在的话</span></span><br><span class="line">        <span class="keyword">if</span> match.numberOfRanges <span class="operator">&gt;</span> <span class="number">3</span> <span class="operator">&amp;&amp;</span> match.range(at: <span class="number">3</span>).length <span class="operator">&gt;</span> <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> imaginaryRange <span class="operator">=</span> <span class="type">Range</span>(match.range(at: <span class="number">3</span>), in: numberString)<span class="operator">!</span></span><br><span class="line">            <span class="comment">// 移除虚部中的 &#x27;i&#x27; 或 &#x27;j&#x27;</span></span><br><span class="line">            <span class="keyword">let</span> imaginaryString <span class="operator">=</span> <span class="type">String</span>(numberString[imaginaryRange]).replacingOccurrences(of: <span class="string">&quot;[ij]&quot;</span>, with: <span class="string">&quot;&quot;</span>, options: .regularExpression)</span><br><span class="line">            complexNumber.imaginary <span class="operator">=</span> <span class="type">Double</span>(imaginaryString) <span class="operator">??</span> <span class="number">0</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            complexNumber.imaginary <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 没有匹配到有效的复数格式，可以设置默认值或进行错误处理</span></span><br><span class="line">        complexNumber.real <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">        complexNumber.imaginary <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>real &#x3D; -3*-4 -4<em>7 &#x3D;-16<br>imaginary &#x3D; -3</em>-4 +4*7 &#x3D; 40<br><img src="/images/calculate.png"><br>结果正常   </p>
+</blockquote>
+<h3 id="1-22-代码重构"><a href="#1-22-代码重构" class="headerlink" title="1.22 代码重构"></a>1.22 代码重构</h3><p>为了提高代码可用性和减少重复，准备依赖策略模式，使用泛型，合并重复的switch语句这几个步骤进行重构</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> isComplex&#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;it is complex<span class="subst">\n</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//这里注意到其实switch中内容是一样的能否用泛型提高代码利用率呢，今天没时间先不管它</span></span><br><span class="line">            <span class="keyword">switch</span> operation&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;+&quot;</span>:</span><br><span class="line">                complexNum3 <span class="operator">=</span> complexNum1 <span class="operator">+</span> complexNum2</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;-&quot;</span>:</span><br><span class="line">                complexNum3 <span class="operator">=</span> complexNum1 <span class="operator">-</span> complexNum2</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;*&quot;</span>:</span><br><span class="line">                complexNum3 <span class="operator">=</span> complexNum1 <span class="operator">*</span> complexNum2</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">                complexNum3 <span class="operator">=</span> complexNum1 <span class="operator">/</span> complexNum2</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="string">&quot;非法的输入&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;num1:&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum1.real)<span class="operator">+</span><span class="string">&quot; &quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum1.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;num2:&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum2.real)<span class="operator">+</span><span class="string">&quot; &quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum2.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;num3:&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="string">&quot; &quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> complexNum3.imaginary<span class="operator">&gt;=</span><span class="number">0</span>&#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="string">&quot;+&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>&#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>&#125;</span><br><span class="line">            </span><br><span class="line">            <span class="built_in">print</span>(result)</span><br><span class="line">    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> num1 <span class="operator">=</span>  <span class="type">Double</span>(number1),<span class="keyword">let</span> num2 <span class="operator">=</span>  <span class="type">Double</span>(number2)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">switch</span> operation&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;+&quot;</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(num1 <span class="operator">+</span> num2)</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;-&quot;</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(num1 <span class="operator">-</span> num2)</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;*&quot;</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(num1 <span class="operator">*</span> num2)</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(num1 <span class="operator">/</span> num2)</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                result <span class="operator">=</span> <span class="string">&quot;非法的输入&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            result <span class="operator">=</span> <span class="string">&quot;null&quot;</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>重构后的代码</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">Number</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">add</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="keyword">Self</span>) -&gt; <span class="keyword">Self</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">subtract</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="keyword">Self</span>) -&gt; <span class="keyword">Self</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">multiply</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="keyword">Self</span>) -&gt; <span class="keyword">Self</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">divide</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="keyword">Self</span>) -&gt; <span class="keyword">Self</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Double</span>: <span class="title class_">Number</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">add</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="type">Double</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">+</span> other</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">subtract</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="type">Double</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">-</span> other</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">multiply</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="type">Double</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">*</span> other</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">divide</span>(<span class="keyword">_</span> <span class="params">other</span>: <span class="type">Double</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span> <span class="operator">/</span> other</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个执行运算的泛型函数</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">calculate_1</span>&lt;<span class="type">T</span>: <span class="type">Number</span>&gt;(<span class="params">lhs</span>: <span class="type">T</span>, <span class="params">rhs</span>: <span class="type">T</span>, <span class="params">operation</span>: <span class="type">String</span>) -&gt; <span class="type">T</span>? &#123;</span><br><span class="line">    <span class="keyword">switch</span> operation &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;+&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> lhs.add(rhs) <span class="keyword">as?</span> <span class="type">T</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;-&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> lhs.subtract(rhs) <span class="keyword">as?</span> <span class="type">T</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;*&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> lhs.multiply(rhs) <span class="keyword">as?</span> <span class="type">T</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;/&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> lhs.divide(rhs) <span class="keyword">as?</span> <span class="type">T</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">        <span class="keyword">if</span> isComplex&#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;it is complex<span class="subst">\n</span>&quot;</span>)</span><br><span class="line">            complexNum3 <span class="operator">=</span> calculate_1(lhs:complexNum1, rhs:complexNum2, operation: operation_) <span class="operator">??</span> <span class="type">ComplexNumber</span>(real: <span class="number">0</span>, imaginary: <span class="number">0</span>) <span class="comment">// Double 运算</span></span><br><span class="line">            <span class="keyword">if</span> complexNum3.imaginary<span class="operator">&gt;=</span><span class="number">0</span>&#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="string">&quot;+&quot;</span><span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>&#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                result <span class="operator">=</span> <span class="type">String</span>(complexNum3.real)<span class="operator">+</span><span class="type">String</span>(complexNum3.imaginary)<span class="operator">+</span><span class="string">&quot;i&quot;</span>&#125;</span><br><span class="line">            <span class="built_in">print</span>(result)</span><br><span class="line">    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> num1 <span class="operator">=</span>  <span class="type">Double</span>(number1),<span class="keyword">let</span> num2 <span class="operator">=</span>  <span class="type">Double</span>(number2)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> num3 <span class="operator">=</span> calculate_1(lhs:num1,rhs:num2,operation: operation_) <span class="operator">??</span> <span class="number">0</span></span><br><span class="line">            result <span class="operator">=</span> <span class="type">String</span>(num3)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            result <span class="operator">=</span> <span class="string">&quot;null&quot;</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>重构后优点：calculate函数作为上下文，它不直接实现数学运算，而是委托给遵循Number协议的类型来执行。calculate函数可以灵活选择不同算法执行。如果有新的数学运算需要支持，只需要在Number协议添加新的方法，并在具体的实现类实现这些方法即可。综上所述具备了扩展性，运算时的灵活性，上下文与算法的解耦的优点</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/15/demo_calculate/" data-id="clv4yyc8y0001kyax0hxn9xti" data-title="calculate_demo" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Swift-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/04/12/Swift-01/" class="article-date">
@@ -254,7 +485,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
     </div>
   </div>
 
@@ -267,23 +498,23 @@
       <ul>
         
           <li>
+            <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">网络接口</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/07/swift-04/">swift_04</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/07/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">文件读写</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
           </li>
         
           <li>
             <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/">Xcode断点</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/23/Swift-03/">Swift_03</a>
-          </li>
-        
-          <li>
-            <a href="/2024/04/22/error-1/">error_1</a>
           </li>
         
       </ul>
