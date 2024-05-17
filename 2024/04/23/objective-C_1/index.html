@@ -6,15 +6,15 @@
   
   <title>objective-C_1 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="对象的使用1[someObject doSomething]; someObject将会收到 doSomething 这条消息。 Person *p1 &#x3D; [Person new];Person *p1 会在栈内存中申请一个空间，在栈内存中声明一个Person类型的指针变量p1。p1是一个指针变量，那么只能存储地址。[Person new]，真正在内存中创建对象的其实是这句代码第一是在堆">
+  <meta name="description" content="#import import 是 include 的升级版，可以防止重复引入头文件这种现象的发生。 import会包含这个类的所有信息，包括实体变量和方法 使用 #import 头文件会自动只导入一次，不会重复导入，相当于#include和#pragma once  内存空间 栈：局部变量 堆：申请的空间（对象） bss： 未初始化的全局变量，静态变量，初始化后回收 数据段：初始化的全局变量，静态">
 <meta property="og:type" content="article">
 <meta property="og:title" content="objective-C_1">
 <meta property="og:url" content="http://example.com/2024/04/23/objective-C_1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="对象的使用1[someObject doSomething]; someObject将会收到 doSomething 这条消息。 Person *p1 &#x3D; [Person new];Person *p1 会在栈内存中申请一个空间，在栈内存中声明一个Person类型的指针变量p1。p1是一个指针变量，那么只能存储地址。[Person new]，真正在内存中创建对象的其实是这句代码第一是在堆">
+<meta property="og:description" content="#import import 是 include 的升级版，可以防止重复引入头文件这种现象的发生。 import会包含这个类的所有信息，包括实体变量和方法 使用 #import 头文件会自动只导入一次，不会重复导入，相当于#include和#pragma once  内存空间 栈：局部变量 堆：申请的空间（对象） bss： 未初始化的全局变量，静态变量，初始化后回收 数据段：初始化的全局变量，静态">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-23T06:28:55.000Z">
-<meta property="article:modified_time" content="2024-04-24T08:04:51.895Z">
+<meta property="article:modified_time" content="2024-05-17T09:29:27.230Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -93,7 +93,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="对象的使用"><a href="#对象的使用" class="headerlink" title="对象的使用"></a>对象的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
+        <h2 id="import"><a href="#import" class="headerlink" title="#import"></a>#import</h2><ul>
+<li>import 是 include 的升级版，可以防止重复引入头文件这种现象的发生。</li>
+<li>import会包含这个类的所有信息，包括实体变量和方法</li>
+<li>使用 #import 头文件会自动只导入一次，不会重复导入，相当于#include和#pragma once</li>
+</ul>
+<h2 id="内存空间"><a href="#内存空间" class="headerlink" title="内存空间"></a>内存空间</h2><ul>
+<li>栈：局部变量</li>
+<li>堆：申请的空间（对象）</li>
+<li>bss： 未初始化的全局变量，静态变量，初始化后回收</li>
+<li>数据段：初始化的全局变量，静态变量，程序结束回收</li>
+<li>代码段：程序结束回收</li>
+</ul>
+<p>##@property</p>
+<ul>
+<li>自动为属性添加setter和getter声明，实现自己写</li>
+<li>四组参数 atomic(默认)|non.  assign(默认)｜retain readwrite(默认)|readonly getter&#x3D;方法名,setter&#x3D;方法名</li>
+</ul>
+<h2 id="对象的使用"><a href="#对象的使用" class="headerlink" title="对象的使用"></a>对象的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
 <p>someObject将会收到 doSomething 这条消息。</p>
 <p>Person *p1 &#x3D; [Person new];<br>Person *p1 会在栈内存中申请一个空间，在栈内存中声明一个Person类型的指针变量p1。p1是一个指针变量，那么只能存储地址。<br>[Person new]，真正在内存中创建对象的其实是这句代码<br>第一是在堆内存中申请1块合适大小的空间；<br>第二是在这个空间中根据类的模板创建对象，类模板中定义了什么属性，就把这些属性依次的声明在对象之中，对象中还有另外一个属性，叫做isa，它是一个指针，这个指针指向这个对象所属的类在代码段中的地址；<br>第三是初始化对象的属性。如果属性的类型是基本数据类型，那么赋值为0，如果属性的类型是OC的类指针类型，那么就赋值为nil；<br>第四是返回对象的地址，将这个地址赋值给p1。<br>因此对象的实际数据（即 Person 对象本身）是存储在堆上的，而指向这些数据的指针（即 p1）是存储在栈上的。<br>###创建对象的过程</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">+ (id)alloc &#123;</span><br><span class="line">    return _objc_rootAlloc(self);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">id</span><br><span class="line">_objc_rootAlloc(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    return callAlloc(cls, false/*checkNil*/, true/*allocWithZone*/);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static ALWAYS_INLINE id</span><br><span class="line">callAlloc(Class cls, bool checkNil, bool allocWithZone=false)</span><br><span class="line">&#123;</span><br><span class="line">    id obj = class_createInstance(cls, 0);</span><br><span class="line">    if (slowpath(!obj)) return callBadAllocHandler(cls);</span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">id </span><br><span class="line">class_createInstance(Class cls, size_t extraBytes)</span><br><span class="line">&#123;</span><br><span class="line">    return _class_createInstanceFromZone(cls, extraBytes, nil);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -142,7 +159,7 @@
 <p>如果一个字符串常量前面没有@符号就表明这个字符串常量是一个C字符串，有@符号就是OC字符串常量。在使用NSString定义字符串时，必须要使用带有@前缀的字符串常量。NSString类型的指针变量，只能存储OC字符串。</p>
 <h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@protocol MyProtocol</span><br><span class="line">- (void)doSomething;</span><br><span class="line">@end</span><br><span class="line">@interface MyClass : NSObject &lt;MyProtocol&gt;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
 
-<p>##NSObject</p>
+
 
       
     </div>
@@ -207,23 +224,23 @@
       <ul>
         
           <li>
-            <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">网络接口</a>
+            <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/swift-04/">swift_04</a>
+            <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">文件读写</a>
+            <a href="/2024/05/16/swift-05/">swift_05</a>
           </li>
         
           <li>
-            <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
+            <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UITableView的常用问题及解决方法</a>
           </li>
         
           <li>
-            <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
+            <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UILabel的常用问题及解决方法</a>
           </li>
         
       </ul>

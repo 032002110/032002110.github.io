@@ -6,15 +6,15 @@
   
   <title>swift_2 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户要登入还是注册的枚举类定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview2️⃣根据登入还是注册返回auth控制器定义了两个类学生authview工厂和教师authview">
+  <meta name="description" content="switch 去掉了break，而且支持字符串类型的判断，支持let-where语句for i in 0..&lt;4 {    total +&#x3D; i}其中：..&lt;表示不包含最后一个数，...表示包含 1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户">
 <meta property="og:type" content="article">
 <meta property="og:title" content="swift_2">
 <meta property="og:url" content="http://example.com/2024/04/16/swift-2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户要登入还是注册的枚举类定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview2️⃣根据登入还是注册返回auth控制器定义了两个类学生authview工厂和教师authview">
+<meta property="og:description" content="switch 去掉了break，而且支持字符串类型的判断，支持let-where语句for i in 0..&lt;4 {    total +&#x3D; i}其中：..&lt;表示不包含最后一个数，...表示包含 1.1 抽象工厂模式声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类  适用场景– 与多个不同系列相关产品交互– 有一个基于一组抽象方法的类例子定义了一个区分用户">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-16T08:10:04.000Z">
-<meta property="article:modified_time" content="2024-04-22T03:55:17.679Z">
+<meta property="article:modified_time" content="2024-05-14T09:36:36.231Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -93,7 +93,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="1-1-抽象工厂模式"><a href="#1-1-抽象工厂模式" class="headerlink" title="1.1 抽象工厂模式"></a>1.1 抽象工厂模式</h2><p>声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类</p>
+        <p>switch 去掉了break，而且支持字符串类型的判断，支持let-where语句<br>for i in 0..&lt;4 {<br>    total +&#x3D; i<br>}<br>其中：<code>..&lt;</code>表示不包含最后一个数，<code>...</code>表示包含</p>
+<h2 id="1-1-抽象工厂模式"><a href="#1-1-抽象工厂模式" class="headerlink" title="1.1 抽象工厂模式"></a>1.1 抽象工厂模式</h2><p>声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类</p>
 <ul>
 <li>适用场景<br>– 与多个不同系列相关产品交互<br>– 有一个基于一组抽象方法的类<br>例子<br>定义了一个区分用户要登入还是注册的枚举类<br>定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview<br>2️⃣根据登入还是注册返回auth控制器<br>定义了两个类学生authview工厂和教师authview工厂都实现了authview工厂协议<br>学生工厂第一个静态方法返回学生登入view或学生注册view<br>教师authview工厂返回教师登入view或学生注册view<br>定义了authview协议，该协议定义了视图接口用于处理授权操作，要求实现视图内容<br>可选的authaction闭包用于处理授权操作，描述视图<br>教师&#x2F;学生 登录&#x2F;注册视图这四个类实现了authview协议，这四个类都有authHander属性，这是一个可选闭包<br>用于处理视图中的按钮动作或其他按钮，可以用闭包执行相应操作<br>定义学生&#x2F;教师认证视图控制器继承认证控制器<br>定义一个私有类负责管理认证控制器的展示</li>
 </ul>
@@ -136,9 +137,9 @@
     </a>
   
   
-    <a href="/2024/04/15/yolov7/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2024/04/15/Uikit-1/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">yolov7</div>
+      <div class="article-nav-title">Uikit_1</div>
     </a>
   
 </nav>
@@ -176,23 +177,23 @@
       <ul>
         
           <li>
-            <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">网络接口</a>
+            <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/swift-04/">swift_04</a>
+            <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">文件读写</a>
+            <a href="/2024/05/16/swift-05/">swift_05</a>
           </li>
         
           <li>
-            <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
+            <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UITableView的常用问题及解决方法</a>
           </li>
         
           <li>
-            <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
+            <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UILabel的常用问题及解决方法</a>
           </li>
         
       </ul>

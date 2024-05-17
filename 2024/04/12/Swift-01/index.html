@@ -6,15 +6,15 @@
   
   <title>Swift_01 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（!）强制解包：playerOne!.win(coins">
+  <meta name="description" content="一些简单语法不同 Swift不需要用；分隔语句 Swift区分变量var和常量let类型 Swift支持可选类型，用？，！声明  1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift_01">
 <meta property="og:url" content="http://example.com/2024/04/12/Swift-01/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（!）强制解包：playerOne!.win(coins">
+<meta property="og:description" content="一些简单语法不同 Swift不需要用；分隔语句 Swift区分变量var和常量let类型 Swift支持可选类型，用？，！声明  1.1析构不带参数和圆括号 123deinit &#123;    &#x2F;&#x2F; 执行析构过程&#125; 123var playerOne: Player? &#x3D; Player(coins: 100)因为 playerOne 是可选的，所以在访问其 coinsInPurse 属">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-12T00:42:59.000Z">
-<meta property="article:modified_time" content="2024-04-15T02:17:59.928Z">
+<meta property="article:modified_time" content="2024-05-15T10:03:36.062Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -93,7 +93,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="1-1析构"><a href="#1-1析构" class="headerlink" title="1.1析构"></a>1.1析构</h2><p>不带参数和圆括号</p>
+        <h2 id="一些简单语法不同"><a href="#一些简单语法不同" class="headerlink" title="一些简单语法不同"></a>一些简单语法不同</h2><ul>
+<li>Swift不需要用；分隔语句</li>
+<li>Swift区分变量var和常量let类型</li>
+<li>Swift支持可选类型，用？，！声明</li>
+</ul>
+<h2 id="1-1析构"><a href="#1-1析构" class="headerlink" title="1.1析构"></a>1.1析构</h2><p>不带参数和圆括号</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> &#123;</span><br><span class="line">    <span class="comment">// 执行析构过程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> playerOne: <span class="type">Player</span>? <span class="operator">=</span> <span class="type">Player</span>(coins: <span class="number">100</span>)</span><br><span class="line">因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（<span class="operator">!</span>）强制解包：</span><br><span class="line">playerOne<span class="operator">!</span>.win(coins: <span class="number">2_000</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="1-2并发"><a href="#1-2并发" class="headerlink" title="1.2并发"></a>1.2并发</h2><h3 id="1-2-1定义与调用"><a href="#1-2-1定义与调用" class="headerlink" title="1.2.1定义与调用"></a>1.2.1定义与调用</h3><p>在 Swift 中，一个异步函数可以交出它在某个线程上的运行权，这样另一个异步函数在这个函数被阻塞时就能获得此线程的运行权。但是，Swift并不能确定当异步函数恢复运行时其将在哪条线程上。<br>对于普通的同步函数或方法来说，它们只能运行到完成闭包、抛出错误或者永远不返回。异步函数或方法也能做到这三件事，但同时也可以在等待其他资源的时候挂起。在异步函数或者方法的函数体中，你可以标记其中的任意位置是可以被挂起的。<br><strong>async 关键字</strong>标记某个函数或者方法是异步的<br>对于那些既是异步又是 throwing 的函数，需要把 async 写在throws 关键字前边。<br><strong>await</strong>标记此处为悬点，，执行会被挂起直到异步方法返回</p>
@@ -105,6 +110,9 @@
 <h3 id="1-2-3Actors"><a href="#1-2-3Actors" class="headerlink" title="1.2.3Actors"></a>1.2.3Actors</h3><p>使用任务将程序氛围孤立和并发的部分<br>actor 在同一时间只允许一个任务访问它的可变状态，这使得多个任务中的代码与一个 actor 交互时更加安全。<br>例如：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">actor</span> <span class="title class_">TemperatureLogger</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> label: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> measurements: [<span class="type">Int</span>]</span><br><span class="line">    <span class="keyword">private(set)</span> <span class="keyword">var</span> max: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">label</span>: <span class="type">String</span>, <span class="params">measurement</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.label <span class="operator">=</span> label</span><br><span class="line">        <span class="keyword">self</span>.measurements <span class="operator">=</span> [measurement]</span><br><span class="line">        <span class="keyword">self</span>.max <span class="operator">=</span> measurement</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>避免访问measurement时候，此时正在更新，使得得到错误的最大值</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><ul>
+<li>多行字符。以下代码表示多行字符串，包括中间的空白行<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quotation <span class="operator">=</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">The White Rabbit put on his spectacles.  &quot;Where shall I begin,</span></span><br><span class="line"><span class="string">please your Majesty?&quot; he asked.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;Begin at the beginning,&quot; the King said gravely, &quot;and go on</span></span><br><span class="line"><span class="string">till you come to the end; then stop.&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">作者：<span class="type">Luminixus</span></span><br><span class="line">链接：https:<span class="comment">//juejin.cn/post/7062377088254214180</span></span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有<span class="operator">。</span>商业转载请联系作者获得授权，非商业转载请注明出处<span class="operator">。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
 <h2 id="2-1计算器demo"><a href="#2-1计算器demo" class="headerlink" title="2.1计算器demo"></a>2.1计算器demo</h2><h3 id="2-11报错"><a href="#2-11报错" class="headerlink" title="2.11报错"></a>2.11报错</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> result <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> num1 <span class="operator">=</span> <span class="type">Double</span>(number1),<span class="keyword">let</span> num2 <span class="operator">=</span> <span class="type">Double</span>(number2)</span><br><span class="line">result <span class="operator">=</span> num1 <span class="operator">+</span> num2</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>&#x2F;Users&#x2F;3c&#x2F;Desktop&#x2F;demo&#x2F;demo_01.swiftpm&#x2F;ContentView.swift:45:31 Cannot assign value of type ‘Double’ to type ‘String’<br>错误信息表明不能直接将Double类型的值之间赋值给String类型的result，因为此时result初始值为空字符串</p>
@@ -179,23 +187,23 @@
       <ul>
         
           <li>
-            <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">网络接口</a>
+            <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/swift-04/">swift_04</a>
+            <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">文件读写</a>
+            <a href="/2024/05/16/swift-05/">swift_05</a>
           </li>
         
           <li>
-            <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
+            <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UITableView的常用问题及解决方法</a>
           </li>
         
           <li>
-            <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
+            <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UILabel的常用问题及解决方法</a>
           </li>
         
       </ul>

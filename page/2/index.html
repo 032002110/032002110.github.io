@@ -69,10 +69,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-yolov7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Xcode断点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2024/04/15/yolov7/" class="article-date">
-  <time class="dt-published" datetime="2024-04-15T08:49:05.000Z" itemprop="datePublished">2024-04-15</time>
+    <a href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" class="article-date">
+  <time class="dt-published" datetime="2024-04-23T03:10:39.000Z" itemprop="datePublished">2024-04-23</time>
 </a>
     
   </div>
@@ -83,7 +83,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/04/15/yolov7/">yolov7</a>
+      <a class="p-name article-title" href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/">Xcode断点</a>
     </h1>
   
 
@@ -91,22 +91,242 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><h2 id="1-1out-of-memory"><a href="#1-1out-of-memory" class="headerlink" title="1.1out of memory"></a>1.1out of memory</h2><p>原因：gpu内存溢出<br>解决方案：将batch 层降低或者租用云服务器</p>
-<h2 id="2-1损失函数"><a href="#2-1损失函数" class="headerlink" title="2.1损失函数"></a>2.1损失函数</h2><p>pretrained模块<br>加载预选模型 ckpt（网络结构，参数值）<br>将输出层做变换 model输出<br>累加梯度（我的batch为2，gpu性能不好) nbs为64,相当于执行64次之后得到一个累加梯度，相等于间接梯度下降<br>ema：vt &#x3D; 斜塔t<br>异常点，batch点太少</p>
-<h1 id="优化方向"><a href="#优化方向" class="headerlink" title="优化方向"></a>优化方向</h1><h2 id="2-1多任务识别"><a href="#2-1多任务识别" class="headerlink" title="2.1多任务识别"></a>2.1多任务识别</h2><p>既能够识别遥感图也同时识别自然图像<br>遥感图像的特点：针对遥感图像中的小目标分布不定并且其特征表现能力不足从而在检测过程中容易存在漏检、误检的现象。遥感图像中的目标种类繁多，形状差异巨大，大量长宽比异常的狭长目标（如桥梁、道路等），会脱离检测算法的形状检测范围[1]。小目标的形状表征能力较弱，不能准确的反映局部细节信息，导致检测精度较低。<br>##实现方式</p>
-<h3 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h3><p>在分别自然图像和船舶图像的数据集进行融合前，除了目标类别外，为每个图像加上一个额外标签用于指示是遥感图像还是自然图像</p>
-<h3 id="自定义数据加载器"><a href="#自定义数据加载器" class="headerlink" title="自定义数据加载器"></a>自定义数据加载器</h3><p>创建一个自定义数据加载器，该加载器能够读取图像数据以及相应标签，包括目标类别和图像类型</p>
-<h3 id="更改中"><a href="#更改中" class="headerlink" title="更改中"></a>更改中</h3><h3 id="选择损失函数"><a href="#选择损失函数" class="headerlink" title="选择损失函数"></a>选择损失函数</h3><p>在neck层进行一个分支任务训练，根据当前批次动态选择哪个损失函数</p>
-<h3 id="对于遥感图像"><a href="#对于遥感图像" class="headerlink" title="对于遥感图像"></a>对于遥感图像</h3><h3 id="2-11改进方式一"><a href="#2-11改进方式一" class="headerlink" title="2.11改进方式一"></a>2.11改进方式一</h3><p>通过引入混合注意力模块ACmix加强网络对于小目标检测的敏感度，以提升对小目标的检测精度；使用WIOU损失函数来优化原网络中的损失函数，</p>
-<h3 id="2-12改进方式二"><a href="#2-12改进方式二" class="headerlink" title="2.12改进方式二"></a>2.12改进方式二</h3><p>使用MPDIoU替换原模型中的CIoU来优化损失函数，以适应遥感图像的尺度变化</p>
-<h3 id="2-13改进方式三"><a href="#2-13改进方式三" class="headerlink" title="2.13改进方式三"></a>2.13改进方式三</h3><p>设计了一种注意力多尺度特征增强(AMSFE)模块，用于扩展主干网络输出特征的感受野，以加强网络对尺度变化大目标的特征表征能力引入旋转边界框损失函数，以获取任意朝向物体的精确位置信息，能够适应遥感图像中多尺度和复杂背景的目标检测任务。</p>
-<h3 id="对于自然图像"><a href="#对于自然图像" class="headerlink" title="对于自然图像"></a>对于自然图像</h3><p>交叉熵损失（Cross-Entropy Loss）：<br>交叉熵损失是分类任务中最常用的损失函数之一。<br>它通过衡量预测概率分布与真实概率分布之间的差异来优化模型。<br>在自然图像分类或识别任务中，交叉熵损失通常能够取得良好的效果。<br>Focal Loss：<br>Focal Loss 是一种设计来解决类别不平衡问题的损失函数，特别是在目标检测领域如RetinaNet中使用。<br>如果自然图像数据集中存在类别不平衡问题（例如，背景类别远多于目标类别），Focal Loss 可以帮助模型更关注于少数类别，从而提高识别性能。</p>
-<p>[1]聂光涛，黄华，光学遥感图像目标检测算法综述[J].自动化化学报，2021,47(08):1749-1768.DOI:10.16383&#x2F;j.aas.c200596</p>
+        <p><img src="/images/%E6%96%AD%E7%82%B9.png"></p>
+<h2 id="1添加自定义断点"><a href="#1添加自定义断点" class="headerlink" title="1添加自定义断点"></a>1添加自定义断点</h2><p><img src="/images/%E6%96%AD%E7%82%B9_1.png"><br>对于自定义的断点可以增加一些判断条件<br>还能为自定义断点添加行为</p>
+<h2 id="1-1Log-Message"><a href="#1-1Log-Message" class="headerlink" title="1.1Log Message"></a>1.1Log Message</h2><ul>
+<li>%H:输出断点触发的次数</li>
+<li>%B:输出断点的名字</li>
+<li>@@:在两个@符号中间可以睡表达式</li>
+</ul>
+<h2 id="1-2Debugger-Command"><a href="#1-2Debugger-Command" class="headerlink" title="1.2Debugger Command"></a>1.2Debugger Command</h2><p>可以设置调试命令，当断点触发，执行调试命令并输出结果到控制台</p>
+<h2 id="1-3Sound"><a href="#1-3Sound" class="headerlink" title="1.3Sound"></a>1.3Sound</h2><p>触发断点时，播放音效</p>
+<h2 id="1-4AppleScript"><a href="#1-4AppleScript" class="headerlink" title="1.4AppleScript"></a>1.4AppleScript</h2><p>可以设置当断点出发时执行脚本<br><img src="/images/%E6%96%AD%E7%82%B9_2.png"><br>运行结果：<br><img src="/images/%E6%96%AD%E7%82%B9_3.png"></p>
+<h2 id="1-5Shell-Command-Capture-GPU-Frame"><a href="#1-5Shell-Command-Capture-GPU-Frame" class="headerlink" title="1.5Shell Command &amp; Capture GPU Frame"></a>1.5Shell Command &amp; Capture GPU Frame</h2><p>Shell command和AppleScript 类似，只是执行shell脚本<br>Capture GPU Frame 开启后，当断点被触发时可以捕获GPU当前所绘制的帧</p>
+<h1 id="2全局断点"><a href="#2全局断点" class="headerlink" title="2全局断点"></a>2全局断点</h1><p><img src="/images/%E6%96%AD%E7%82%B9_4.png"><br>1Swift Error Breakpoint ：swift项目中使用的全局断点，当添加此断点后，程序会暂停在使用throw抛出异常的代码处。<br>2Exception Breakpoint：用来捕获程序中的异常，当程序发生数组越界，设置了非空参数为nil等问题会停留在异常处。<br>3OpenGL ES Error Breakpoint ：当OpenGL ES发生错误时，程序会停留在错误处。<br>4Symbolic Breakpoint ：符号断点，这是最强大的一种全局断点，系统的方法也可以断住.<br>5Runtime Issue Breakpoint:运行时问题断点：当运用运行时方法出现错误时、程序会暂停在出错处。<br>6constraint Error Breakpoint是约束错误断点，自动布局控件出现约束错误时，添加这个断点后，程序会暂停在出错处，打印错误信息。<br>7Test Failure Breakpoint 是测试错误断点，当出现测试没有通过情况时，添加此断点会，停在失败的测试处。</p>
+<p>作者：潜水的鱼儿<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7013163859833782285">https://juejin.cn/post/7013163859833782285</a><br>来源：稀土掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/15/yolov7/" data-id="clvk8bt3r0000stax5xyp306u" data-title="yolov7" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" data-id="clvdm2ood000191ax2xeqeee0" data-title="Xcode断点" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Swift-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/23/Swift-03/" class="article-date">
+  <time class="dt-published" datetime="2024-04-23T00:56:12.000Z" itemprop="datePublished">2024-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/23/Swift-03/">Swift_03</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="溢出运算符"><a href="#溢出运算符" class="headerlink" title="溢出运算符"></a>溢出运算符</h2><p>Swift运算符默认不会溢出当向一个整数类型的常量或者变量赋予超过它容量的值时，Swift默认会报错，而不是允许生成一个无效的数。所有溢出行为都会被捕获并报告为错误 所有溢出运算符都是&amp;开头的比如&amp;+<br>～：按位取反  &lt;&lt; 左移   &amp;: 按位与  &gt;&gt; 右移   ｜： 按位或<br>无符号  超出存储范围被丢弃 ，低位用0补位</p>
+<h2 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Vector2D</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> x <span class="operator">=</span> <span class="number">0.0</span>, y <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Vector2D</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">+</span> (<span class="params">left</span>: <span class="type">Vector2D</span>, <span class="params">right</span>: <span class="type">Vector2D</span>) -&gt; <span class="type">Vector2D</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Vector2D</span>(x: left.x <span class="operator">+</span> right.x, y: left.y <span class="operator">+</span> right.y)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="复合赋值"><a href="#复合赋值" class="headerlink" title="复合赋值"></a>复合赋值</h2><p>合赋值运算符将赋值运算符（&#x3D;）与其它运算符进行结合，需要把运算符的左参数设置成 inout 类型，因为这个参数的值会在运算符函数内直接被修改。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Vector2D</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">+=</span> (<span class="params">left</span>: <span class="keyword">inout</span> <span class="type">Vector2D</span>, <span class="params">right</span>: <span class="type">Vector2D</span>) &#123;</span><br><span class="line">        left <span class="operator">=</span> left <span class="operator">+</span> right</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="自定义运算符"><a href="#自定义运算符" class="headerlink" title="自定义运算符"></a>自定义运算符</h2><p>新的运算符要使用 operator 关键字在全局作用域内进行定义，同时还要指定 prefix、infix 或者 postfix 修饰符<br>prefix operator +++</p>
+<h3 id="自定义中缀运算符的优先级"><a href="#自定义中缀运算符的优先级" class="headerlink" title="自定义中缀运算符的优先级"></a>自定义中缀运算符的优先级</h3><p>没有明确放入某个优先级组的自定义中缀运算符将会被放到一个默认的优先级组内，其优先级高于三元运算符。</p>
+<p>##元组</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 声明元组</span></span><br><span class="line"><span class="keyword">let</span> http404Error <span class="operator">=</span> (<span class="number">404</span>, <span class="string">&quot;Not Found&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 基本元组赋值方式</span></span><br><span class="line"><span class="keyword">let</span> (statusCode, statusMessage) <span class="operator">=</span> http404Error</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(statusCode)</span>&quot;</span>) <span class="comment">// Prints &quot;The status code is 404&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(statusMessage)</span>&quot;</span>) <span class="comment">// Prints &quot;The status message is Not Found&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 用“_”忽略元组某成员的，高阶元组赋值方式</span></span><br><span class="line"><span class="keyword">let</span> (justTheStatusCode, <span class="keyword">_</span>) <span class="operator">=</span> http404Error</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(justTheStatusCode)</span>&quot;</span>) <span class="comment">// Prints &quot;The status code is 404&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 用索引，获取元组成员值的，高阶元组赋值方式，牛逼</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(http404Error.<span class="number">0</span>)</span>&quot;</span>) <span class="comment">// Prints &quot;The status code is 404&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(http404Error.<span class="number">1</span>)</span>&quot;</span>) <span class="comment">// Prints &quot;The status message is Not Found&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 用成员名称，获取元组成员值的，高阶元组赋值方式，牛逼</span></span><br><span class="line"><span class="keyword">let</span> http200Status <span class="operator">=</span> (statusCode: <span class="number">200</span>, description: <span class="string">&quot;OK&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status code is <span class="subst">\(http200Status.statusCode)</span>&quot;</span>) <span class="comment">// Prints &quot;The status code is 200&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;The status message is <span class="subst">\(http200Status.description)</span>&quot;</span>) <span class="comment">// Prints &quot;The status message is OK&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>##可空类型<br>当Int（str）由于并不是所有字符都能转为整型数 ，因此Int（）为可空类型 返回值是Int？<br>当要从可空类型取值有三种解包方法</p>
+<ul>
+<li><ol>
+<li>强制解包，断定不为空。用！来直接解包，如果可选值为nil，程序发生崩溃。<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> optionalNumber: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"><span class="keyword">var</span> number <span class="operator">=</span> optionalNumber<span class="operator">!</span> <span class="comment">// 强制解包</span></span><br><span class="line"><span class="built_in">print</span>(number) <span class="comment">// 输出 10</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>可选绑定，检查可选类型是否包含值，并在同一时间将值赋予一个临时变量，这样做好处是不会发生程序崩溃。（较为常用）<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> optionalString: <span class="type">String</span>? <span class="operator">=</span> <span class="string">&quot;Hello, Swift&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> string <span class="operator">=</span> optionalString &#123;</span><br><span class="line">    <span class="built_in">print</span>(string) <span class="comment">// 只有当 optionalString 非 nil 时才执行</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;No value found&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>隐式解包，声明时候用！而不是？，与强制解包不同无需每次访问变量时都使用！（前期是没有变成nil）省略不必要的解包<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> assumedString: <span class="type">String</span>! <span class="operator">=</span> <span class="string">&quot;An implicitly unwrapped optional string.&quot;</span></span><br><span class="line"><span class="keyword">let</span> implicitString: <span class="type">String</span> <span class="operator">=</span> assumedString <span class="comment">// no need for an exclamation point</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意：下面的语句 Swift 类型推断 optionalString 类型是 String? 而不是 String!</span></span><br><span class="line"><span class="keyword">let</span> optionalString <span class="operator">=</span> assumedString</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h2 id="断言和先决条件"><a href="#断言和先决条件" class="headerlink" title="断言和先决条件"></a>断言和先决条件</h2><p>确保程序在运行到某行代码时满足必要条件，可以用来快速定位问题。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assert</span>(age <span class="operator">&gt;=</span> <span class="number">0</span>, <span class="string">&quot;A person&#x27;s age can&#x27;t be less than zero.&quot;</span>)</span><br><span class="line"><span class="built_in">precondition</span>(index <span class="operator">&gt;</span> <span class="number">0</span>, <span class="string">&quot;Index must be greater than zero.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/23/Swift-03/" data-id="clvdm2oof000391ax69gjcj6h" data-title="Swift_03" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-error" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/22/error/" class="article-date">
+  <time class="dt-published" datetime="2024-04-22T07:28:54.000Z" itemprop="datePublished">2024-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/22/error/">error_1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/error_001"><br>没有初始化 tableview &#x3D; UITableView()<br>！<br>        let cell &#x3D; tableView.dequeueReusableCell(withIdentifier: “cell”) ?? UITableViewCell(style: .subtitle,reuseIdentifier: “cell”)<br>&#x2F;&#x2F;        let cell &#x3D; tableView.dequeueReusableCell(withIdentifier: “CommentCell”, for: indexPath) as! CommentCell<br>没有理解好，不知如何正确自定义单元格类CommentCell 和如何正确地注册和重用这个单元格。</p>
+<h2 id="错误二"><a href="#错误二" class="headerlink" title="错误二"></a>错误二</h2><p>没有正确处理可选选项，应该用 if-let 或者 guard-let 来检查 nil 值。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/22/error/" data-id="clwahdzen0002i3axgpgz9njw" data-title="error_1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-snapkit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/18/snapkit/" class="article-date">
+  <time class="dt-published" datetime="2024-04-18T02:23:32.000Z" itemprop="datePublished">2024-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/18/snapkit/">Snipkit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><p>###1.0<br>No Xcode project found, please specify one<br>解决方法 应该在包含 .xcodeproj 文件夹的上一级目录中执行该pod init，而不是在 .xcodeproj 文件夹内部。</p>
+<p>###1.1<br>[!] The target <code>demo_12</code> is declared multiple times.</p>
+<p>&#x2F;&#x2F; Uncomment the next line to define a global platform for your project<br>&#x2F;&#x2F; platform :ios, ‘9.0’</p>
+<p>target ‘demo_12’ do<br>&#x2F;&#x2F;Comment the next line if you don’t want to use dynamic frameworks<br>  use_frameworks!</p>
+<p>  &#x2F;&#x2F; Pods for demo_12</p>
+<p>  target ‘demo_12Tests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; Pods for testing<br>  end</p>
+<p>  target ‘demo_12UITests’ do<br>    &#x2F;&#x2F; Pods for testing<br>  end</p>
+<p>end</p>
+<p>source ‘<a target="_blank" rel="noopener" href="https://github.com/CocoaPods/Specs.git">https://github.com/CocoaPods/Specs.git</a>‘</p>
+<p>platform :ios, ‘10.0’</p>
+<p>use_frameworks!</p>
+<p>target ‘demo_12’ do<br>    pod ‘SnapKit’, ‘~&gt; 3.0’<br>end<br>修改为<br>&#x2F;&#x2F; 指定源<br>source ‘<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git">https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git</a>‘</p>
+<p>&#x2F;&#x2F; 指定全局平台和版本<br>platform :ios, ‘12.0’</p>
+<p>&#x2F;&#x2F; 使用动态框架<br>use_frameworks!</p>
+<p>&#x2F;&#x2F; 主target配置<br>target ‘demo_31’ do<br>  &#x2F;&#x2F; 主项目依赖的Pods<br>  pod ‘SnapKit’</p>
+<p>  &#x2F;&#x2F; 测试target配置<br>  target ‘demo_31Tests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; 测试依赖的Pods<br>  end</p>
+<p>  &#x2F;&#x2F; UI测试target配置<br>  target ‘demo_31UITests’ do<br>    inherit! :search_paths<br>    &#x2F;&#x2F; UI测试依赖的Pods<br>  end<br>end<br>###1.2<br>xcode15.2 默认 ENABLE_USER_SCRIPT_SANDBOXING &#x3D; YES 出现问题</p>
+<p>关于导入Masonry出现报错，找到Deployment Info 选择一个更高的iOS版本例如iOS 12.0或更高<br><img src="/images/mistake.png"><br>改为NO 即可</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/18/snapkit/" data-id="clvdm2oof000591axfyx97xgr" data-title="Snipkit" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swift-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/16/swift-2/" class="article-date">
+  <time class="dt-published" datetime="2024-04-16T08:10:04.000Z" itemprop="datePublished">2024-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/04/16/swift-2/">swift_2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>switch 去掉了break，而且支持字符串类型的判断，支持let-where语句<br>for i in 0..&lt;4 {<br>    total +&#x3D; i<br>}<br>其中：<code>..&lt;</code>表示不包含最后一个数，<code>...</code>表示包含</p>
+<h2 id="1-1-抽象工厂模式"><a href="#1-1-抽象工厂模式" class="headerlink" title="1.1 抽象工厂模式"></a>1.1 抽象工厂模式</h2><p>声明该系列中所有产品构造方法的接口，基于抽象工厂接口创建不同的工厂类</p>
+<ul>
+<li>适用场景<br>– 与多个不同系列相关产品交互<br>– 有一个基于一组抽象方法的类<br>例子<br>定义了一个区分用户要登入还是注册的枚举类<br>定义了authview工厂协议，两个静态方法要求 1️⃣根据是登入还是注册返回对应authview<br>2️⃣根据登入还是注册返回auth控制器<br>定义了两个类学生authview工厂和教师authview工厂都实现了authview工厂协议<br>学生工厂第一个静态方法返回学生登入view或学生注册view<br>教师authview工厂返回教师登入view或学生注册view<br>定义了authview协议，该协议定义了视图接口用于处理授权操作，要求实现视图内容<br>可选的authaction闭包用于处理授权操作，描述视图<br>教师&#x2F;学生 登录&#x2F;注册视图这四个类实现了authview协议，这四个类都有authHander属性，这是一个可选闭包<br>用于处理视图中的按钮动作或其他按钮，可以用闭包执行相应操作<br>定义学生&#x2F;教师认证视图控制器继承认证控制器<br>定义一个私有类负责管理认证控制器的展示</li>
+</ul>
+<p><strong>分析一下：这个例子中AuthViewFactory充当了抽象工厂的角色，负责AuthView和AuthVIewController实例生产<br>学生和教师各自登入和注册视图构成不同产品族，学生认证工厂和教师认证工厂就是具体的工厂。替补方法AuthView和<br>AuthViewController类确保了学生和教师认证视图和控制器遵循相同规范。私有类作为客户端不直接依赖于具体产品类<br>降低系统耦合度。当需要增加新的用户类型，可以只增加新的具体工厂和产品类，保证了扩展性。</strong></p>
+<pre><code>static func authController(for type: AuthType) -&gt; AuthViewController &#123;
+    let controller = StudentAuthViewController(contentView: authView(for: type))
+    print(&quot;Student View Controller has been created&quot;)
+    return controller
+&#125;
+</code></pre>
+<h2 id="1-2MVC"><a href="#1-2MVC" class="headerlink" title="1.2MVC"></a>1.2MVC</h2><p>class ViewController:UIViewController,UITableViewDelegate,UITableViewDataSource{<br>    var tableview : UITableView!<br>    override func loadView(){<br>    super.loadView()<br>    setupTableView()<br>}<br>    func setupView(){<br>    tableView &#x3D; UItableView()<br>    tableView.register()<br>    tableView.dataSource &#x3D; self<br>    tableVIew.delegate &#x3D; self<br>    tableView.snp.makeConstraints{…}<br>}<br>}<br>model<br>class MyTableViewCell: UITableViewCell{<br>    var model<br>    override init(){</p>
+<p>}<br>}</p>
+<h2 id="1-3"><a href="#1-3" class="headerlink" title="1.3"></a>1.3</h2><p><a target="_blank" rel="noopener" href="https://www.hackingwithswift.com/glossary">Swift中语法和功能的术语字典网站</a></p>
+<h2 id="2-1-可选类型"><a href="#2-1-可选类型" class="headerlink" title="2.1 可选类型"></a>2.1 可选类型</h2><p>可选类型：在swift中它们允许我们表示一些数据的缺失——一个字符串不仅仅只能是空的，还能不存在。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> person <span class="keyword">in</span> people &#123;  </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> customer <span class="operator">=</span> person <span class="keyword">as?</span> <span class="type">Customer</span> &#123;  </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;I&#x27;m a customer, with id <span class="subst">\(customer.id)</span>&quot;</span>)  </span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> employee <span class="operator">=</span> person <span class="keyword">as?</span> <span class="type">Employee</span> &#123;  </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;I&#x27;m an employee, earning $<span class="subst">\(employee.salary)</span>&quot;</span>)  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>as? 是一个类型转换操作符，用于尝试将某个对象转换为指定的类型。这个操作符用于进行安全的向下转型</p>
+<h2 id="2-2可失败的初始值"><a href="#2-2可失败的初始值" class="headerlink" title="2.2可失败的初始值"></a>2.2可失败的初始值</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Employee</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> username: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> password: <span class="type">String</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">username</span>: <span class="type">String</span>, <span class="params">password</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> password.count <span class="operator">&gt;=</span> <span class="number">8</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">guard</span> password.lowercased() <span class="operator">!=</span> <span class="string">&quot;password&quot;</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">self</span>.username <span class="operator">=</span> username</span><br><span class="line">        <span class="keyword">self</span>.password <span class="operator">=</span> password</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果验证检查失败，可失败的初始值设定项使我们有机会退出对象的创建，。可失败的初始化器通过返回nil来明确指示初始化没有成功，这简化了错误处理逻辑</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/16/swift-2/" data-id="clv4yyc900005kyax1wrxdczg" data-title="swift_2" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -322,7 +542,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="1-1析构"><a href="#1-1析构" class="headerlink" title="1.1析构"></a>1.1析构</h2><p>不带参数和圆括号</p>
+        <h2 id="一些简单语法不同"><a href="#一些简单语法不同" class="headerlink" title="一些简单语法不同"></a>一些简单语法不同</h2><ul>
+<li>Swift不需要用；分隔语句</li>
+<li>Swift区分变量var和常量let类型</li>
+<li>Swift支持可选类型，用？，！声明</li>
+</ul>
+<h2 id="1-1析构"><a href="#1-1析构" class="headerlink" title="1.1析构"></a>1.1析构</h2><p>不带参数和圆括号</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> &#123;</span><br><span class="line">    <span class="comment">// 执行析构过程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> playerOne: <span class="type">Player</span>? <span class="operator">=</span> <span class="type">Player</span>(coins: <span class="number">100</span>)</span><br><span class="line">因为 playerOne 是可选的，所以在访问其 coinsInPurse 属性来打印钱包中的硬币数量和调用 win(coins:) 方法时，使用感叹号（<span class="operator">!</span>）强制解包：</span><br><span class="line">playerOne<span class="operator">!</span>.win(coins: <span class="number">2_000</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="1-2并发"><a href="#1-2并发" class="headerlink" title="1.2并发"></a>1.2并发</h2><h3 id="1-2-1定义与调用"><a href="#1-2-1定义与调用" class="headerlink" title="1.2.1定义与调用"></a>1.2.1定义与调用</h3><p>在 Swift 中，一个异步函数可以交出它在某个线程上的运行权，这样另一个异步函数在这个函数被阻塞时就能获得此线程的运行权。但是，Swift并不能确定当异步函数恢复运行时其将在哪条线程上。<br>对于普通的同步函数或方法来说，它们只能运行到完成闭包、抛出错误或者永远不返回。异步函数或方法也能做到这三件事，但同时也可以在等待其他资源的时候挂起。在异步函数或者方法的函数体中，你可以标记其中的任意位置是可以被挂起的。<br><strong>async 关键字</strong>标记某个函数或者方法是异步的<br>对于那些既是异步又是 throwing 的函数，需要把 async 写在throws 关键字前边。<br><strong>await</strong>标记此处为悬点，，执行会被挂起直到异步方法返回</p>
@@ -334,6 +559,9 @@
 <h3 id="1-2-3Actors"><a href="#1-2-3Actors" class="headerlink" title="1.2.3Actors"></a>1.2.3Actors</h3><p>使用任务将程序氛围孤立和并发的部分<br>actor 在同一时间只允许一个任务访问它的可变状态，这使得多个任务中的代码与一个 actor 交互时更加安全。<br>例如：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">actor</span> <span class="title class_">TemperatureLogger</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> label: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> measurements: [<span class="type">Int</span>]</span><br><span class="line">    <span class="keyword">private(set)</span> <span class="keyword">var</span> max: <span class="type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">label</span>: <span class="type">String</span>, <span class="params">measurement</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.label <span class="operator">=</span> label</span><br><span class="line">        <span class="keyword">self</span>.measurements <span class="operator">=</span> [measurement]</span><br><span class="line">        <span class="keyword">self</span>.max <span class="operator">=</span> measurement</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>避免访问measurement时候，此时正在更新，使得得到错误的最大值</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><ul>
+<li>多行字符。以下代码表示多行字符串，包括中间的空白行<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quotation <span class="operator">=</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">The White Rabbit put on his spectacles.  &quot;Where shall I begin,</span></span><br><span class="line"><span class="string">please your Majesty?&quot; he asked.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;Begin at the beginning,&quot; the King said gravely, &quot;and go on</span></span><br><span class="line"><span class="string">till you come to the end; then stop.&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">作者：<span class="type">Luminixus</span></span><br><span class="line">链接：https:<span class="comment">//juejin.cn/post/7062377088254214180</span></span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有<span class="operator">。</span>商业转载请联系作者获得授权，非商业转载请注明出处<span class="operator">。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
 <h2 id="2-1计算器demo"><a href="#2-1计算器demo" class="headerlink" title="2.1计算器demo"></a>2.1计算器demo</h2><h3 id="2-11报错"><a href="#2-11报错" class="headerlink" title="2.11报错"></a>2.11报错</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> result <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> num1 <span class="operator">=</span> <span class="type">Double</span>(number1),<span class="keyword">let</span> num2 <span class="operator">=</span> <span class="type">Double</span>(number2)</span><br><span class="line">result <span class="operator">=</span> num1 <span class="operator">+</span> num2</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>&#x2F;Users&#x2F;3c&#x2F;Desktop&#x2F;demo&#x2F;demo_01.swiftpm&#x2F;ContentView.swift:45:31 Cannot assign value of type ‘Double’ to type ‘String’<br>错误信息表明不能直接将Double类型的值之间赋值给String类型的result，因为此时result初始值为空字符串</p>
@@ -498,23 +726,23 @@
       <ul>
         
           <li>
-            <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">网络接口</a>
+            <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/swift-04/">swift_04</a>
+            <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
           </li>
         
           <li>
-            <a href="/2024/05/07/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">文件读写</a>
+            <a href="/2024/05/16/swift-05/">swift_05</a>
           </li>
         
           <li>
-            <a href="/2024/04/24/Objective-C-2/">Objective-C_2</a>
+            <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UITableView的常用问题及解决方法</a>
           </li>
         
           <li>
-            <a href="/2024/04/23/objective-C_1/">objective-C_1</a>
+            <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UILabel的常用问题及解决方法</a>
           </li>
         
       </ul>
