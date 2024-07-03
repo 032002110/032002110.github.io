@@ -69,6 +69,430 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-bug-图片变形" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/" class="article-date">
+  <time class="dt-published" datetime="2024-07-03T07:08:38.000Z" itemprop="datePublished">2024-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>碰到两次图片变形的bug，一次是单纯的width约束有问题没什么好说的。第二次是由于图片的长宽比固定但和UI设计给的比例不一样，当时解决思路有两个。</p>
+<ul>
+<li>第一个方案：约束上我们使用正常的长宽比，这样导致下面会出现多余的空白。 （如图一）<br><img src="/images/bug_01.png" alt="图一"><br>  图一</li>
+</ul>
+<p>然后我想使他相对顶部一段距离，使下方空白处裁剪掉。但和我想象不一样的是，他这个只是让显示区域上方不显示了，并不是让整个图片下移。（如图二）<strong>也就是说通过 offset 设置顶部偏移时，视图的顶部确实下移，但视图内容的位置并未改变，只是视图框架的位置改变了，导致看起来像是上方被“剪裁”了。</strong>暂时不了解如何满足我的这个需求。<br><img src="/images/bug_02.png" alt="图二"><br>    图二</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">backgroundImgView.snp.makeConstraints &#123; make <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="type">IS_IPAD</span> &#123;</span><br><span class="line">        make.left.right.bottom.equalToSuperview()</span><br><span class="line">        make.top.equalToSuperview().offset(xx.bbScale)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        make.edges.equalToSuperview()</span><br><span class="line">    &#125;</span><br><span class="line">    make.width.equalTo(<span class="type">IS_IPAD</span> <span class="operator">?</span> SCREEN_MIN : <span class="number">375</span>.bbScale)</span><br><span class="line">    make.height.equalTo(<span class="type">IS_IPAD</span> <span class="operator">?</span> <span class="type">SCREEN_MIN</span><span class="operator">*</span><span class="number">511</span><span class="operator">/</span><span class="number">375</span> : <span class="number">511</span>.bbScale)</span><br><span class="line">&#125;</span><br><span class="line">        <span class="keyword">let</span> confirmView <span class="operator">=</span> <span class="type">BBPenAddVipContentView</span>(deviceID: deviceID, addVipID: addVipID)</span><br><span class="line">        confirmView.frame <span class="operator">=</span> view.bounds</span><br><span class="line">backgroundImgView 属于<span class="type">BBPenAddVipContentView</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二个方案：就是后面我实际使用的，使用另外两个正常的尺寸覆盖在原图片上，组合为正常的比例。<br><img src="/images/%E5%BA%95%E6%9D%BF.png" alt="底板"><br><img src="/images/vip%E9%A2%86%E5%8F%96.png" alt="vip领取"></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/" data-id="cly5m32t90000jxax2u695yqw" data-title="bug_图片变形" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-第一次实际开发遇到的各种问题总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2024-06-17T07:16:57.000Z" itemprop="datePublished">2024-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>1️⃣一个颜色的使用 </p>
+<p>2️⃣旋转函数的使用</p>
+<p>3️⃣ 单一原则 </p>
+<p>现在 pag<br>            self.loadingAnimationView.isHidden &#x3D; true<br>            self.loadingPagAnimationView.isHidden &#x3D; false<br>            let bundle &#x3D; BBCommonSwiftUIHelper.BBCommonSwiftUIBundle!<br>            if let filePath &#x3D; bundle.path(forResource: “Animation&#x2F;common_pagimg_loading”, ofType: “pag”) {<br>                let url &#x3D; NSURL(fileURLWithPath: filePath)<br>                loadingPagAnimationView.sd_setImage(with: url as URL) { [weak self]img, error, cacheType, url in</p>
+<pre><code>   loadingView.showAnimation()
+if (self.loadingOffSetY  == 0)&#123;
+    [self.view bb_ShowLoadingViewWithTitle:self.loadingDataTipString isHiddenNavBar:NO offsetCenterY:BBWidth(-50) offsetTop:0 bgColor:UIColor.clearColor isPagLoading:isPagLoading];
+</code></pre>
+<p>关于适配ipad 和 布局调整这一块</p>
+<pre><code>        很多时候top值不用offset谁 bottom也是 
+        make.top.bottom.equalTo(self)不用写height
+
+        有时候图片有问题（大小看上去和设定不一样）可能真的是下载的图片有问题
+        
+                    make.top.equalTo(self.contentScrollView.snp.bottom)
+                    因为scrollView第一个开始是没有长高的。所以第一个元素是这么写的
+</code></pre>
+<p>问题1️⃣ 导航栏那个回退图标，我看ui图不是在正中为啥设置在正中</p>
+<p>如何解决渐变色<br>        contentView.layer.addSublayer(self.gradientLayer)</p>
+<p>按钮通常是这么构成的<br>        self.addSubview(self.lblTitle)<br>        self.addSubview(self.imgView)<br>        self.addSubview(self.btnBox)</p>
+<p>字体 let attributedText &#x3D; NSMutableAttributedString(string: text,attributes:[.foregroundColor:”5E3823”.bbColor,.font:UIFont.systemFont(ofSize: IS_IPAD ? 20.bbScale : 18.bbScale,weight: semibold)</p>
+<p>regular - 常规 semibold - 半粗 bold - 粗体 400 500 600</p>
+<p>如何收藏音频<br>    func collectionAudio(audioID:Int,albumID:Int,completeBlock:@escaping(Error?,Bool)-&gt;Void){</p>
+<pre><code>    GSCollectManager.collectRadioStationAudio(true, audioID: GSCollectIDType(audioID), albumID: GSCollectIDType(albumID)) &#123; error, isSuccess in
+        if error == nil &#123;
+            completeBlock(nil,true)
+        &#125;else &#123;
+            completeBlock(error,false)
+        &#125;
+       
+    &#125;
+    
+&#125;
+</code></pre>
+<ul>
+<li>如何监听一个元素变化，并使他变化后进行一系列操作<br>扩展 Notification.Name 来定义一个新的通知名称 isSelectedChanged<br>extension Notification.Name {<br>  static let isSelectedChanged &#x3D; Notification.Name(“isSelectedChanged”)<br>}<br>使用 NotificationCenter 的 addObserver 方法来注册当前对象（self）作为观察者，以监听 isSelectedChanged 通知。当此通知被发送时，将调用 handleSelectionChange(notification:) 方法来响应。<br>  NotificationCenter.default.addObserver(self, selector: #selector(handleSelectionChange(notification:)), name: .isSelectedChanged, object:nil)</li>
+</ul>
+<p>使用 NotificationCenter 的 post 方法来发送通知。如果条件满足，发送 isSelectedChanged 通知，并将 vm.tagModelList[indexRow] 作为通知的对象。<br>        if(indexRow &lt; self.vm.tagModelList.count){<br>            NotificationCenter.default.post(name: .isSelectedChanged, object: self.vm.tagModelList[indexRow]  , userInfo: nil)<br>        }else {<br>            print(“索引越界！”)<br>        }</p>
+<p>例 navigationBar.dropButton.addTarget(self,action: #selector(dropButtonTapped),for: .touchUpInside)</p>
+<p>没网络：<br>        if BBSAppManager.default().status &#x3D;&#x3D; .notReachable {<br>            &#x2F;&#x2F;没网络<br>            GSCommonHelper.showNoNetToast()<br>            return<br>        }</p>
+<p>弹窗 安静模式的点击问号</p>
+<p>&#x2F;&#x2F;<br>&#x2F;&#x2F;  BBPenAddVipView.swift<br>&#x2F;&#x2F;  BBPenDeviceManager<br>&#x2F;&#x2F;<br>&#x2F;&#x2F;  Created by wanglin on 2023&#x2F;8&#x2F;7.<br>&#x2F;&#x2F;</p>
+<p>import UIKit<br>import BBDefinitionContainer<br>import BBCommonSwiftUI<br>import Then<br>import BBPenDataManager<br>import GSUIKit</p>
+<p>enum AddVipErrorCode:String {<br>    case Error_UserDevice &#x2F;&#x2F;&#x2F;“领取失败，当前账号与设备已解除绑定”<br>    case AddVipClose  &#x2F;&#x2F;&#x2F;“暂不支持领取”，提示并隐藏领取入口<br>    case Login  &#x2F;&#x2F;&#x2F;提示并自动退出当前账号<br>    case Error_AnotherAccount &#x2F;&#x2F;&#x2F;“领取失败，权益已被其他账号领取”，提示并移除该设备的VIP权益领取入口<br>}</p>
+<p>@objc protocol BBPenAddVipContentViewDelegate:NSObjectProtocol {<br>    &#x2F;&#x2F;&#x2F;&#x2F;确认领取<br>    @objc optional func addvipContentViewDidConfirmReceive(deviceID:String,addVipID:Int)<br>}</p>
+<p>class BBPenAddVipContentView: UIView {</p>
+<pre><code>weak var popup:BBPenPopup?
+weak var delegate:BBPenAddVipContentViewDelegate?
+var deviceID:String = &quot;&quot;
+var addVipID:Int = 0
+convenience init(deviceID:String,addVipID:Int) &#123;
+    self.init()
+    self.deviceID = deviceID
+    self.addVipID = addVipID
+&#125;
+
+lazy var backgroundImgView: UIImageView = &#123;
+    let imageView = UIImageView(image: UIImage.bb_bundle_imageName(name: &quot;pen_addvip_content_bg&quot;))
+    return imageView
+&#125;()
+
+lazy var foregroundImgView:UIImageView = UIImageView(image: .bb_bundle_imageName(name: &quot;pen_addvip_confirm_fore&quot;))
+
+lazy var titleLabe:UILabel = UILabel().then &#123; label in
+    let text = &quot;宝宝巴士SVIP领取须知&quot;
+    let prefix = &quot;宝宝巴士SVIP&quot;
+    let attributedText = NSMutableAttributedString(string: text,attributes: [.foregroundColor:&quot;#5E3823&quot;.bbColor,.font:UIFont.systemFont(ofSize: IS_IPAD ? 22.bbScale : 18.bbScale, weight: .semibold)])
+    attributedText.addAttributes([.foregroundColor:&quot;#DB6B00&quot;.bbColor], range: NSRange(location: 0, length: prefix.count))
+    label.attributedText = attributedText
+&#125;
+
+lazy var useContentView:BBPenAddVipContentSubView = BBPenAddVipContentSubView().then &#123; contentView in
+    contentView.titleLabel.text = &quot;SVIP权益仅限绑定设备的账号使用&quot;
+    let content = &quot;请确认是否由当前账号领取权益，若需要其他账号领取，需其他账号添加设备后在APP内操作；权益一经领取，仅领取的账号享有SVIP权益，无法通过更换手机号等方式进行权益转让。&quot;
+    let paraStyle = NSMutableParagraphStyle()
+    paraStyle.lineSpacing = IS_IPAD ? 4.bbScale : 3.bbScale
+    let attr = NSMutableAttributedString(string: content,attributes: [.foregroundColor:UIColor.cccGray2,.font:UIFont.systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular),.paragraphStyle:paraStyle])
+    contentView.contentLabel.attributedText = attr
+    contentView.layer.cornerRadius = 14.bbScale
+    contentView.layer.masksToBounds = true
+&#125;
+
+lazy var withDrawContentView:BBPenAddVipContentSubView = BBPenAddVipContentSubView().then &#123; contentView in
+    contentView.titleLabel.text = &quot;SVIP权益回收&quot;
+    let content = &quot;SVIP权益仅限购买并绑定设备的用户享有，若领取后发生退货情况，宝宝巴士有权回收已发放的权益。&quot;
+    let paraStyle = NSMutableParagraphStyle()
+    paraStyle.lineSpacing = IS_IPAD ? 4.bbScale : 3.bbScale
+    let attr = NSMutableAttributedString(string: content,attributes: [.foregroundColor:UIColor.cccGray2,.font:UIFont.systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular),.paragraphStyle:paraStyle])
+    contentView.contentLabel.attributedText = attr
+    contentView.layer.cornerRadius = 14.bbScale
+    contentView.layer.masksToBounds = true
+&#125;
+
+lazy var agreeButton:BBSButton = BBSButton().then &#123; button in
+    let width = IS_IPAD ? 23.bbScale : 20.bbScale
+    button.frame = CGRect(x: 0, y: 0, width: IS_IPAD ? 167.bbScale : 140.bbScale, height: width)
+    button.setTitle(&quot;我已阅读领取须知&quot;, for: .normal)
+    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_unselected&quot;), for: .normal)
+    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_unselected&quot;), for: [.normal,.highlighted])
+    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_selected&quot;), for: .selected)
+    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_selected&quot;), for: [.selected,.highlighted])
+    button.setTitleColor(.black, for: .normal)
+    button.setTitleColor(.black, for: .highlighted)
+    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 16.bbScale : 14.bbScale, weight: .regular)
+    button.setImagePosition(.left, spacing: 4.bbScale)
+    button.imageRect = CGRect(x: 0, y: 0, width: width, height: width)
+    button.titleRect = CGRect(x: width + 4.bbScale, y: 0, width: IS_IPAD ? 140.bbScale : 126.bbScale, height: width)
+&#125;
+
+lazy var cancelButton:UIButton = UIButton(type: .custom).then &#123; button in
+    button.setTitle(&quot;暂不领取&quot;, for: .normal)
+    button.setTitleColor(&quot;#CA6647&quot;.bbColor, for: .normal)
+    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 16.bbScale , weight: .regular)
+</code></pre>
+<p>&#x2F;&#x2F;        button.backgroundColor &#x3D; “#E1C4A6”.bbColor<br>        button.bb_borderColor()(“#E1C4A6”.bbColor).bb_borderWidth()(1).bb_cornerRadius()(IS_IPAD ? 25.gsScale : 22.bbScale)<br>    }</p>
+<pre><code>lazy var confirmButton:UIButton = UIButton(type: .custom).then &#123; button in
+    button.setTitle(&quot;立即领取&quot;, for: .normal)
+    button.setTitleColor(&quot;#5E3823&quot;.bbColor, for: .normal)
+    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 16.bbScale , weight: .regular)
+    button.backgroundColor = &quot;#FBE288&quot;.bbColor
+    button.bb_cornerRadius()(IS_IPAD ? 25.gsScale : 22.bbScale)
+&#125;
+
+
+//点击同意
+@objc func agreeAction(_ button:BBSButton) &#123;
+    button.isSelected = !button.isSelected
+&#125;
+
+@objc func cancelAction() &#123;
+</code></pre>
+<p>&#x2F;&#x2F;        if IS_IPAD {<br>&#x2F;&#x2F;            self.viewController().dismiss(animated: true)<br>&#x2F;&#x2F;        } else {<br>&#x2F;&#x2F;            self.popup?.dismiss()<br>&#x2F;&#x2F;        }<br>        self.popup?.dismiss()<br>    }</p>
+<pre><code>@objc func confirmAction() &#123;
+    if agreeButton.isSelected == false &#123;
+        self.hideToast(false)
+        self.toastMessage(&quot;请先阅读须知&quot;)
+        return
+    &#125;
+</code></pre>
+<p>&#x2F;&#x2F;        if IS_IPAD {<br>&#x2F;&#x2F;&#x2F;&#x2F;            self.viewController().dismiss(animated: true)<br>&#x2F;&#x2F;        } else {<br>&#x2F;&#x2F;            popup?.dismiss()<br>&#x2F;&#x2F;        }<br>        popup?.dismiss()<br>        delegate?.addvipContentViewDidConfirmReceive?(deviceID: deviceID, addVipID: addVipID)<br>    }</p>
+<pre><code>override init(frame: CGRect) &#123;
+    super.init(frame: frame)
+    self.setupViews()
+&#125;
+
+required init?(coder: NSCoder) &#123;
+    super.init(coder: coder)
+    self.setupViews()
+&#125;
+
+func setupViews() &#123;
+    
+    let leftInset = IS_IPAD ? 40.bbScale : 20.bbScale
+    
+    addSubview(backgroundImgView)
+    backgroundImgView.snp.makeConstraints &#123; make in
+        make.edges.equalToSuperview()
+        make.width.equalTo(IS_IPAD ? SCREEN_MIN : 375.bbScale)
+        make.height.equalTo(IS_IPAD ? 451.gsScale : 511.bbScale)
+    &#125;
+    
+    if IS_IPAD &#123;
+        addSubview(foregroundImgView)
+        foregroundImgView.snp.makeConstraints &#123; make in
+            make.left.right.equalToSuperview()
+            make.top.equalToSuperview().offset(-20.bbScale)
+            make.height.equalTo(165.bbScale)
+        &#125;
+    &#125;
+    
+    addSubview(titleLabe)
+    titleLabe.snp.makeConstraints &#123; make in
+        make.top.equalTo(IS_IPAD ? 73.bbScale : 44.bbScale)
+        make.left.equalTo(leftInset)
+        make.height.equalTo(IS_IPAD ? 31.bbScale : 25.bbScale)
+    &#125;
+    
+    addSubview(useContentView)
+    useContentView.snp.makeConstraints &#123; make in
+        make.top.equalTo(titleLabe.snp.bottom).offset(IS_IPAD ? 40.bbScale : 16.bbScale)
+        make.left.equalTo(leftInset)
+        make.right.equalTo(-leftInset)
+    &#125;
+    
+    addSubview(withDrawContentView)
+    withDrawContentView.snp.makeConstraints &#123; make in
+        make.top.equalTo(useContentView.snp.bottom).offset(12.bbScale)
+        make.left.right.equalTo(useContentView)
+    &#125;
+    
+    addSubview(agreeButton)
+    agreeButton.addTarget(self, action: #selector(agreeAction(_:)), for: .touchUpInside)
+    agreeButton.snp.makeConstraints &#123; make in
+        make.left.equalTo(leftInset)
+        if kIsIPadX &#123;
+            make.top.equalTo(withDrawContentView.snp.bottom).offset(IS_IPAD ? 100.bbScale : 16.bbScale)
+        &#125;else &#123;
+            make.top.equalTo(withDrawContentView.snp.bottom).offset(IS_IPAD ? 153.bbScale : 16.bbScale)
+        &#125;
+       
+        make.height.equalTo(agreeButton.height)
+    &#125;
+    
+    addSubview(cancelButton)
+    cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
+    cancelButton.snp.makeConstraints &#123; make in
+        make.top.equalTo(agreeButton.snp.bottom).offset(IS_IPAD ? 12.bbScale : 20.bbScale)
+        make.left.equalTo(leftInset)
+        make.width.equalTo(IS_IPAD ? 130.gsScale : 120.bbScale)
+        make.height.equalTo(IS_IPAD ? 50.gsScale : 44.bbScale)
+    &#125;
+    
+    addSubview(confirmButton)
+    confirmButton.addTarget(self, action: #selector(confirmAction), for: .touchUpInside)
+    confirmButton.snp.makeConstraints &#123; make in
+        make.left.equalTo(cancelButton.snp.right).offset(IS_IPAD ? 24.bbScale : 16.bbScale)
+        make.centerY.equalTo(cancelButton)
+        make.right.equalTo(-leftInset)
+        make.height.equalTo(IS_IPAD ? 50.gsScale : 44.bbScale)
+    &#125;
+&#125;
+
+deinit &#123;
+    debugPrint(&quot;AddVipContentViewDeinit&quot;)
+&#125;
+</code></pre>
+<p>}</p>
+<p>class BBPenAddVipContentSubView: UIView {</p>
+<pre><code>lazy var titleLabel:UILabel = UILabel().then &#123; label in
+    label.textColor = .cccGray1
+    label.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 15.bbScale, weight: .semibold)
+&#125;
+
+lazy var contentLabel:UILabel = UILabel().then &#123; label in
+    label.textColor = .cccGray2
+    label.numberOfLines = 0
+    label.font = .systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular)
+&#125;
+
+override init(frame: CGRect) &#123;
+    super.init(frame: frame)
+    self.setupViews()
+&#125;
+
+required init?(coder: NSCoder) &#123;
+    super.init(coder: coder)
+    self.setupViews()
+&#125;
+
+func setupViews() &#123;
+    
+    backgroundColor = .white
+    
+    addSubview(titleLabel)
+    titleLabel.snp.makeConstraints &#123; make in
+        make.left.top.equalTo(16.bbScale)
+        make.right.equalTo(-16.bbScale)
+        make.height.equalTo(IS_IPAD ? 25.bbScale : 21.bbScale)
+    &#125;
+    
+    addSubview(contentLabel)
+    contentLabel.snp.makeConstraints &#123; make in
+        make.top.equalTo(titleLabel.snp.bottom).offset(12.bbScale)
+        make.left.equalTo(16.bbScale)
+        make.right.bottom.equalTo(-16.bbScale)
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" data-id="cly5m32td0002jxax8398ar74" data-title="第一次实际开发遇到的各种问题总结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-音频模块" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/" class="article-date">
+  <time class="dt-published" datetime="2024-06-05T06:12:17.000Z" itemprop="datePublished">2024-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/">音频模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <pre><code>// 检查网络连接状态，如果没有网络连接，则显示网络错误提示并返回
+if BBSAppManager.default().status == .notReachable &#123;
+    netErrorToast()
+    return
+&#125;
+// 检查登录状态
+if BBSAppManager.default().isLogin() == false &#123;
+    BBSRouterManager.openLoginVC(&quot;收藏音频&quot;) // 打开登录界面
+    return // 如果未登录，直接返回
+&#125;
+
+// 执行收藏操作
+BBSAudioManager.default().collectMedia(!button.isSelected) &#123; [weak self] isCollect, error in
+    // 如果收藏操作失败
+    if error != nil &#123;
+        GSCommonHelper.showToast(&quot;操作失败，请检查网络&quot;) // 显示操作失败提示
+        self?.resetCollectAnimation() // 重置收藏动画
+        self?.collectMediaButtons(!isCollect) // 更新按钮状态
+        return // 返回
+    &#125;
+    
+    // 如果未收藏，直接返回
+    if !isCollect &#123;
+        return
+    &#125;
+    
+    // 如果配置允许显示评价视图，显示评价视图
+    if BBSAppManager.default().configuration.isCanShowEvaluateView &#123;
+        BBSEvaluateViewController.showPictrueBookPlayeEvaluateView() // 显示评价视图
+    &#125;
+&#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/" data-id="cly5m32tc0001jxax1eb5ew1g" data-title="音频模块" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-文件操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="article-date">
@@ -479,226 +903,11 @@ Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以�
 
 
   
-    <article id="post-swift-04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/05/07/swift-04/" class="article-date">
-  <time class="dt-published" datetime="2024-05-07T07:01:07.000Z" itemprop="datePublished">2024-05-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/05/07/swift-04/">swift_04</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>##lazy关键词<br>在Swift中，lazy关键字用于延迟初始化一个属性直到它第一次被调用或访问。这意味着，只有在实际需要使用这个属性的时候，它才会被创建和初始化。这种方式通常用于初始化成本较高的对象，或者在对象的构造过程中依赖于某些条件或其他只有运行时才能确定的数据。<br><strong>使用lazy可以让程序的启动更快，因为它避免了在应用启动时不必要的初始化工作。此外，它还能确保属性只在真正需要时才被创建，从而节省资源。</strong></p>
-<h2 id="闭包和函数"><a href="#闭包和函数" class="headerlink" title="闭包和函数"></a>闭包和函数</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
-<li><strong>函数</strong>：函数是具有名称的代码块，可以执行特定的任务。函数可以接收参数、执行操作，并返回结果。函数通常定义在全局作用域或类&#x2F;结构体的上下文中。</li>
-<li><strong>闭包</strong>：闭包是可以捕获和存储其所在上下文中的任何常量和变量引用的匿名函数。闭包通常以匿名的形式书写，它可以捕获其定义环境中的值。</li>
-</ul>
-<h3 id="捕获上下文"><a href="#捕获上下文" class="headerlink" title="捕获上下文"></a>捕获上下文</h3><ul>
-<li><strong>函数</strong>：普通函数不能捕获或存储它们所在作用域之外的变量。</li>
-<li><strong>闭包</strong>：闭包能够捕获周围作用域中的常量和变量，并持有这些值，即使作用域本身已经不存在了，闭包依然可以访问和修改这些值。</li>
-</ul>
-<h3 id="书写形式"><a href="#书写形式" class="headerlink" title="书写形式"></a>书写形式</h3><ul>
-<li><strong>函数</strong>：通常定义得较为明确，具有固定的名称和结构（例如 <code>func doSomething() &#123;&#125;</code>）。</li>
-<li><strong>闭包</strong>：书写更为灵活，通常用于短小的代码片段，可以直接内嵌于函数调用参数中或者用于变量赋值。闭包的语法结构通常更为紧凑（例如 <code>&#123; (parameters) -&gt; return type in statements &#125;</code>）。</li>
-</ul>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
-<li><strong>函数</strong>：更适合执行复杂或多步骤的操作，它们的重用性和结构性更强。</li>
-<li><strong>闭包</strong>：非常适合用作完成特定任务的代码块，特别是在需要操作函数类型的值时，如回调函数、函数作为参数等场景。<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">configureButton</span>(<span class="keyword">_</span> <span class="params">button</span>: <span class="type">UIButton</span>, <span class="params">action</span>: <span class="keyword">@escaping</span> () -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="comment">// 将闭包与按钮对象关联，允许在其他地方使用闭包中的行为</span></span><br><span class="line">    objc_setAssociatedObject(button, <span class="operator">&amp;</span>actionKey, action, .<span class="type">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置按钮的触发事件</span></span><br><span class="line">    button.addTarget(<span class="keyword">self</span>, action: <span class="keyword">#selector</span>(buttonAction), for: .touchUpInside)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件响应函数</span></span><br><span class="line"><span class="keyword">@objc</span> <span class="keyword">func</span> <span class="title function_">buttonAction</span>(<span class="keyword">_</span> <span class="params">sender</span>: <span class="type">UIButton</span>) &#123;</span><br><span class="line">    <span class="comment">// 从关联对象中获取闭包，并执行它</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> action <span class="operator">=</span> objc_getAssociatedObject(sender, <span class="operator">&amp;</span>actionKey) <span class="keyword">as?</span> () -&gt; <span class="type">Void</span> &#123;</span><br><span class="line">        action()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> buttonOne <span class="operator">=</span> <span class="type">UIButton</span>()</span><br><span class="line">configureButton(buttonOne) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Button One Tapped&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> buttonTwo <span class="operator">=</span> <span class="type">UIButton</span>()</span><br><span class="line">configureButton(buttonTwo) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Button Two Tapped&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-这种方式的好处是代码的灵活性和封装性。不需要为每种行为定义一个单独的函数，也不需要在一个大的事件处理器中使用条件语句来区分行为。每个按钮的行为都是独立定义的，且可以根据需要随时更改，使得代码更加模块化和易于维护。</li>
-</ul>
-<h3 id="逃逸闭包"><a href="#逃逸闭包" class="headerlink" title="逃逸闭包"></a>逃逸闭包</h3><p>在 Swift 中，当一个闭包作为参数传递给一个函数，并且这个闭包在函数返回之后才被调用，我们称这个闭包为逃逸闭包。换句话说，逃逸闭包是在函数执行完毕后仍然可以在函数外部被调用的闭包。<br><strong>逃逸闭包主要用于异步操作，比如网络请求、定时器等。在这些情况下，我们需要在函数执行完毕后继续使用这个闭包，比如在网络请求返回数据后更新 UI，或者在定时器触发后执行一些操作。</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个网络请求函数，接受一个逃逸闭包作为参数</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">fetchData</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> (<span class="type">Data</span>?, <span class="type">Error</span>?) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://example.com/data&quot;</span>)<span class="operator">!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> task <span class="operator">=</span> <span class="type">URLSession</span>.shared.dataTask(with: url) &#123; (data, response, error) <span class="keyword">in</span></span><br><span class="line">        <span class="comment">// 当网络请求完成时，调用逃逸闭包</span></span><br><span class="line">        completion(data, error)</span><br><span class="line">    &#125;</span><br><span class="line">    task.resume()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用网络请求函数</span></span><br><span class="line">fetchData &#123; (data, error) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Failed to fetch data: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> data &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Data fetched: <span class="subst">\(data)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/07/swift-04/" data-id="clwahpid2000cjvaxeucfecmo" data-title="swift_04" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-objective-C_1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/04/23/objective-C_1/" class="article-date">
-  <time class="dt-published" datetime="2024-04-23T06:28:55.000Z" itemprop="datePublished">2024-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/04/23/objective-C_1/">objective-C_1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="import"><a href="#import" class="headerlink" title="#import"></a>#import</h2><ul>
-<li>import 是 include 的升级版，可以防止重复引入头文件这种现象的发生。</li>
-<li>import会包含这个类的所有信息，包括实体变量和方法</li>
-<li>使用 #import 头文件会自动只导入一次，不会重复导入，相当于#include和#pragma once</li>
-</ul>
-<h2 id="内存空间"><a href="#内存空间" class="headerlink" title="内存空间"></a>内存空间</h2><ul>
-<li>栈：局部变量</li>
-<li>堆：申请的空间（对象）</li>
-<li>bss： 未初始化的全局变量，静态变量，初始化后回收</li>
-<li>数据段：初始化的全局变量，静态变量，程序结束回收</li>
-<li>代码段：程序结束回收</li>
-</ul>
-<p>##@property</p>
-<ul>
-<li>自动为属性添加setter和getter声明，实现自己写</li>
-<li>四组参数 atomic(默认)|non.  assign(默认)｜retain readwrite(默认)|readonly getter&#x3D;方法名,setter&#x3D;方法名</li>
-</ul>
-<h2 id="对象的使用"><a href="#对象的使用" class="headerlink" title="对象的使用"></a>对象的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
-<p>someObject将会收到 doSomething 这条消息。</p>
-<p>Person *p1 &#x3D; [Person new];<br>Person *p1 会在栈内存中申请一个空间，在栈内存中声明一个Person类型的指针变量p1。p1是一个指针变量，那么只能存储地址。<br>[Person new]，真正在内存中创建对象的其实是这句代码<br>第一是在堆内存中申请1块合适大小的空间；<br>第二是在这个空间中根据类的模板创建对象，类模板中定义了什么属性，就把这些属性依次的声明在对象之中，对象中还有另外一个属性，叫做isa，它是一个指针，这个指针指向这个对象所属的类在代码段中的地址；<br>第三是初始化对象的属性。如果属性的类型是基本数据类型，那么赋值为0，如果属性的类型是OC的类指针类型，那么就赋值为nil；<br>第四是返回对象的地址，将这个地址赋值给p1。<br>因此对象的实际数据（即 Person 对象本身）是存储在堆上的，而指向这些数据的指针（即 p1）是存储在栈上的。<br>###创建对象的过程</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">+ (id)alloc &#123;</span><br><span class="line">    return _objc_rootAlloc(self);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">id</span><br><span class="line">_objc_rootAlloc(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    return callAlloc(cls, false/*checkNil*/, true/*allocWithZone*/);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static ALWAYS_INLINE id</span><br><span class="line">callAlloc(Class cls, bool checkNil, bool allocWithZone=false)</span><br><span class="line">&#123;</span><br><span class="line">    id obj = class_createInstance(cls, 0);</span><br><span class="line">    if (slowpath(!obj)) return callBadAllocHandler(cls);</span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">id </span><br><span class="line">class_createInstance(Class cls, size_t extraBytes)</span><br><span class="line">&#123;</span><br><span class="line">    return _class_createInstanceFromZone(cls, extraBytes, nil);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>核心逻辑</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">static id _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone, bool cxxConstruct = true, size_t *outAllocatedSize = nil) &#123;</span><br><span class="line"></span><br><span class="line">    // 实例变量内存大小，实例大小 instanceSize 会存储在类的 isa_t 结构体中，经过对齐最后返回</span><br><span class="line">    size_t size = cls-&gt;instanceSize(extraBytes);  </span><br><span class="line"></span><br><span class="line">    // 给对象申请内存空间</span><br><span class="line">    id obj = (id)calloc(1, size);</span><br><span class="line">    if (!obj) return nil;</span><br><span class="line">    </span><br><span class="line">    // 初始化 isa</span><br><span class="line">    obj-&gt;initInstanceIsa(cls, hasCxxDtor);</span><br><span class="line"></span><br><span class="line">    return obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">size_t instanceSize(size_t extraBytes) &#123;</span><br><span class="line">    // Core Foundation 需要所有的对象的大小至少有 16 字节。</span><br><span class="line">    size_t size = alignedInstanceSize() + extraBytes;</span><br><span class="line">    if (size &lt; 16) size = 16;</span><br><span class="line">    return size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uint32_t alignedInstanceSize() &#123;</span><br><span class="line">    return word_align(unalignedInstanceSize());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uint32_t unalignedInstanceSize() &#123;</span><br><span class="line">    assert(isRealized());</span><br><span class="line">    return data()-&gt;ro-&gt;instanceSize;</span><br><span class="line">&#125;</span><br><span class="line">inline void objc_object::initIsa(Class cls, bool indexed, bool hasCxxDtor) &#123;</span><br><span class="line">    if (!indexed) &#123;</span><br><span class="line">        isa.cls = cls;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        isa.bits = ISA_MAGIC_VALUE;</span><br><span class="line">        isa.has_cxx_dtor = hasCxxDtor;</span><br><span class="line">        isa.shiftcls = (uintptr_t)cls &gt;&gt; 3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>##自动引用计数<br>概念：在 LLVM 编译器中设置 ARC(Automaitc Reference Counting) 为有效状态，就无需再次键入 retain 或 release 代码。</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>oc方法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>生成并持有对象</td>
-<td>alloc&#x2F;new&#x2F;copy&#x2F;mutableCopy</td>
-</tr>
-<tr>
-<td>持有对象</td>
-<td>retain</td>
-</tr>
-<tr>
-<td>释放对象</td>
-<td>release</td>
-</tr>
-<tr>
-<td>废弃对象</td>
-<td>dealloc</td>
-</tr>
-<tr>
-<td>**对象创建一般需要调用alloc和init两个方法。alloc为对象分配内存，然后此时对象并没有初始化，所以不能正常工作。init方法调用后，对象被初始化，此后才可以正常工作。</td>
-<td></td>
-</tr>
-<tr>
-<td>MyClass <em>myObject &#x3D; [[MyClass alloc] init]; 最常见实例化过程</em>*</td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="为什么在-Objective-C-中，所有的对象都用一个指针来追踪"><a href="#为什么在-Objective-C-中，所有的对象都用一个指针来追踪" class="headerlink" title="为什么在 Objective-C 中，所有的对象都用一个指针来追踪"></a>为什么在 Objective-C 中，所有的对象都用一个指针来追踪</h3><ul>
-<li>很多时候，我们需要把一个对象交给另一个函数或者方法去修改其中的内容（比如说一个 Person 对象的 age 属性），显然如果我们想让修改方获取到这个对象，我们需要的传递的是地址，而不是复制一份。</li>
-<li>另一方面，对象的内存是分配在堆上的，而值类型是分配到栈上的。所以一般对象的生命周期会比普通的值类型要长，而且创建和销毁对象以及内存管理是要消耗性能的，所以通过指针来引用一个对象，比直接复制和创建对象要更有效率、更节省性能。</li>
-</ul>
-<h3 id="属性和成员变量"><a href="#属性和成员变量" class="headerlink" title="属性和成员变量"></a>属性和成员变量</h3><p>Objective-C 中的属性通常在 @interface 块中声明</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass : NSObject</span><br><span class="line">@property (nonatomic, strong) NSString *name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<p>如果一个字符串常量前面没有@符号就表明这个字符串常量是一个C字符串，有@符号就是OC字符串常量。在使用NSString定义字符串时，必须要使用带有@前缀的字符串常量。NSString类型的指针变量，只能存储OC字符串。</p>
-<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@protocol MyProtocol</span><br><span class="line">- (void)doSomething;</span><br><span class="line">@end</span><br><span class="line">@interface MyClass : NSObject &lt;MyProtocol&gt;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/23/objective-C_1/" data-id="clwahpid2000hjvax1diggf2o" data-title="objective-C_1" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Xcode断点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" class="article-date">
-  <time class="dt-published" datetime="2024-04-23T03:10:39.000Z" itemprop="datePublished">2024-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/">Xcode断点</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><img src="/images/%E6%96%AD%E7%82%B9.png"></p>
-<h2 id="1添加自定义断点"><a href="#1添加自定义断点" class="headerlink" title="1添加自定义断点"></a>1添加自定义断点</h2><p><img src="/images/%E6%96%AD%E7%82%B9_1.png"><br>对于自定义的断点可以增加一些判断条件<br>还能为自定义断点添加行为</p>
-<h2 id="1-1Log-Message"><a href="#1-1Log-Message" class="headerlink" title="1.1Log Message"></a>1.1Log Message</h2><ul>
-<li>%H:输出断点触发的次数</li>
-<li>%B:输出断点的名字</li>
-<li>@@:在两个@符号中间可以睡表达式</li>
-</ul>
-<h2 id="1-2Debugger-Command"><a href="#1-2Debugger-Command" class="headerlink" title="1.2Debugger Command"></a>1.2Debugger Command</h2><p>可以设置调试命令，当断点触发，执行调试命令并输出结果到控制台</p>
-<h2 id="1-3Sound"><a href="#1-3Sound" class="headerlink" title="1.3Sound"></a>1.3Sound</h2><p>触发断点时，播放音效</p>
-<h2 id="1-4AppleScript"><a href="#1-4AppleScript" class="headerlink" title="1.4AppleScript"></a>1.4AppleScript</h2><p>可以设置当断点出发时执行脚本<br><img src="/images/%E6%96%AD%E7%82%B9_2.png"><br>运行结果：<br><img src="/images/%E6%96%AD%E7%82%B9_3.png"></p>
-<h2 id="1-5Shell-Command-Capture-GPU-Frame"><a href="#1-5Shell-Command-Capture-GPU-Frame" class="headerlink" title="1.5Shell Command &amp; Capture GPU Frame"></a>1.5Shell Command &amp; Capture GPU Frame</h2><p>Shell command和AppleScript 类似，只是执行shell脚本<br>Capture GPU Frame 开启后，当断点被触发时可以捕获GPU当前所绘制的帧</p>
-<h1 id="2全局断点"><a href="#2全局断点" class="headerlink" title="2全局断点"></a>2全局断点</h1><p><img src="/images/%E6%96%AD%E7%82%B9_4.png"><br>1Swift Error Breakpoint ：swift项目中使用的全局断点，当添加此断点后，程序会暂停在使用throw抛出异常的代码处。<br>2Exception Breakpoint：用来捕获程序中的异常，当程序发生数组越界，设置了非空参数为nil等问题会停留在异常处。<br>3OpenGL ES Error Breakpoint ：当OpenGL ES发生错误时，程序会停留在错误处。<br>4Symbolic Breakpoint ：符号断点，这是最强大的一种全局断点，系统的方法也可以断住.<br>5Runtime Issue Breakpoint:运行时问题断点：当运用运行时方法出现错误时、程序会暂停在出错处。<br>6constraint Error Breakpoint是约束错误断点，自动布局控件出现约束错误时，添加这个断点后，程序会暂停在出错处，打印错误信息。<br>7Test Failure Breakpoint 是测试错误断点，当出现测试没有通过情况时，添加此断点会，停在失败的测试处。</p>
-<p>作者：潜水的鱼儿<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7013163859833782285">https://juejin.cn/post/7013163859833782285</a><br>来源：稀土掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" data-id="clwahpid00005jvaxh0co7akk" data-title="Xcode断点" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -717,7 +926,7 @@ Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以�
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
     </div>
   </div>
 
@@ -730,23 +939,23 @@ Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以�
       <ul>
         
           <li>
+            <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/">音频模块</a>
+          </li>
+        
+          <li>
             <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
           </li>
         
           <li>
             <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/16/swift-05/">swift_05</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UITableView的常用问题及解决方法</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">UILabel的常用问题及解决方法</a>
           </li>
         
       </ul>

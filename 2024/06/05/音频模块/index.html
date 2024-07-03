@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>UILabel的常用问题及解决方法 | Hexo</title>
+  <title>音频模块 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="文本行数设置调整 UILabel 的 numberOfLines 属性。设置为 0 可以让 UILabel 根据需要显示多行文本。 富文本显示 使用 NSAttributedString 来定义复杂的文本格式，包括不同的字体、颜色、下划线等。 设置 UILabel 的 attributedText 属性来显示富文本。">
+  <meta name="description" content="&#x2F;&#x2F; 检查网络连接状态，如果没有网络连接，则显示网络错误提示并返回 if BBSAppManager.default().status &#x3D;&#x3D; .notReachable &#123;     netErrorToast()     return &#125; &#x2F;&#x2F; 检查登录状态 if BBSAppManager.default().isLogin() &#x3D;&#x3D; false &#123;     BBS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UILabel的常用问题及解决方法">
-<meta property="og:url" content="http://example.com/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:title" content="音频模块">
+<meta property="og:url" content="http://example.com/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="文本行数设置调整 UILabel 的 numberOfLines 属性。设置为 0 可以让 UILabel 根据需要显示多行文本。 富文本显示 使用 NSAttributedString 来定义复杂的文本格式，包括不同的字体、颜色、下划线等。 设置 UILabel 的 attributedText 属性来显示富文本。">
+<meta property="og:description" content="&#x2F;&#x2F; 检查网络连接状态，如果没有网络连接，则显示网络错误提示并返回 if BBSAppManager.default().status &#x3D;&#x3D; .notReachable &#123;     netErrorToast()     return &#125; &#x2F;&#x2F; 检查登录状态 if BBSAppManager.default().isLogin() &#x3D;&#x3D; false &#123;     BBS">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-15T09:30:34.000Z">
-<meta property="article:modified_time" content="2024-05-16T03:22:26.224Z">
+<meta property="article:published_time" content="2024-06-05T06:12:17.000Z">
+<meta property="article:modified_time" content="2024-06-05T09:14:46.657Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -71,10 +71,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-UILabel的常用问题及解决方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-音频模块" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2024-05-15T09:30:34.000Z" itemprop="datePublished">2024-05-15</time>
+    <a href="/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/" class="article-date">
+  <time class="dt-published" datetime="2024-06-05T06:12:17.000Z" itemprop="datePublished">2024-06-05</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      UILabel的常用问题及解决方法
+      音频模块
     </h1>
   
 
@@ -93,16 +93,43 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="文本行数设置"><a href="#文本行数设置" class="headerlink" title="文本行数设置"></a>文本行数设置</h2><p>调整 UILabel 的 numberOfLines 属性。设置为 0 可以让 UILabel 根据需要显示多行文本。</p>
-<h2 id="富文本显示"><a href="#富文本显示" class="headerlink" title="富文本显示"></a>富文本显示</h2><ul>
-<li>使用 NSAttributedString 来定义复杂的文本格式，包括不同的字体、颜色、下划线等。</li>
-<li>设置 UILabel 的 attributedText 属性来显示富文本。</li>
-</ul>
+        <pre><code>// 检查网络连接状态，如果没有网络连接，则显示网络错误提示并返回
+if BBSAppManager.default().status == .notReachable &#123;
+    netErrorToast()
+    return
+&#125;
+// 检查登录状态
+if BBSAppManager.default().isLogin() == false &#123;
+    BBSRouterManager.openLoginVC(&quot;收藏音频&quot;) // 打开登录界面
+    return // 如果未登录，直接返回
+&#125;
+
+// 执行收藏操作
+BBSAudioManager.default().collectMedia(!button.isSelected) &#123; [weak self] isCollect, error in
+    // 如果收藏操作失败
+    if error != nil &#123;
+        GSCommonHelper.showToast(&quot;操作失败，请检查网络&quot;) // 显示操作失败提示
+        self?.resetCollectAnimation() // 重置收藏动画
+        self?.collectMediaButtons(!isCollect) // 更新按钮状态
+        return // 返回
+    &#125;
+    
+    // 如果未收藏，直接返回
+    if !isCollect &#123;
+        return
+    &#125;
+    
+    // 如果配置允许显示评价视图，显示评价视图
+    if BBSAppManager.default().configuration.isCanShowEvaluateView &#123;
+        BBSEvaluateViewController.showPictrueBookPlayeEvaluateView() // 显示评价视图
+    &#125;
+&#125;
+</code></pre>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="clwahpicz0002jvaxgoz2dw8h" data-title="UILabel的常用问题及解决方法" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/" data-id="cly5m32tc0001jxax1eb5ew1g" data-title="音频模块" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -112,19 +139,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2024/05/15/UITableView%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          UITableView的常用问题及解决方法
+          第一次实际开发遇到的各种问题总结
         
       </div>
     </a>
   
   
-    <a href="/2024/05/14/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">混合开发</div>
+      <div class="article-nav-title">文件操作</div>
     </a>
   
 </nav>
