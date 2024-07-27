@@ -69,6 +69,44 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-learn" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/26/learn/" class="article-date">
+  <time class="dt-published" datetime="2024-07-26T05:58:57.000Z" itemprop="datePublished">2024-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/07/26/learn/">learn</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/26/learn/" data-id="clz3hbh2m0000ndax85ga4kjs" data-title="learn" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-bug-图片变形" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/" class="article-date">
@@ -134,7 +172,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>1️⃣一个颜色的使用 </p>
+        <p>1️⃣遇到异步操作使用闭包作为参数，使得接收最后函数执行后得到结果</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">getAlbumAudioInfo</span>(<span class="params">completeBlock</span>:<span class="keyword">@escaping</span>(<span class="type">Bool</span>)-&gt;<span class="type">Void</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>  &#123;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> <span class="keyword">self</span>.getAlumInfo() &#123;</span><br><span class="line">            completeBlock(<span class="literal">true</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">guard</span> radioService<span class="operator">!</span>.isLoading <span class="operator">==</span> <span class="literal">false</span> <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</span><br><span class="line">    radioService<span class="operator">?</span>.loadData(completion: &#123; isSuccess <span class="keyword">in</span></span><br><span class="line">        completeBlock(isSuccess)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>异步操作意味着该操作会在当前函数执行流之外进行，不会阻塞当前函数的继续执行。执行过程如下</p>
+<ul>
+<li>getAlbumAudioInfo函数开始执行。</li>
+<li>函数内部进行一些同步的检查和初始化。</li>
+<li>调用radioService?.loadData(completion:)启动异步数据加载。</li>
+<li>getAlbumAudioInfo函数继续执行到末尾并返回，此时异步数据加载可能还没有完成。</li>
+<li>在将来的某个时间点，异步数据加载完成，radioService调用completion闭包（即completeBlock），此时getAlbumAudioInfo函数早已执行完毕。</li>
+</ul>
 <p>2️⃣旋转函数的使用</p>
 <p>3️⃣ 单一原则 </p>
 <p>现在 pag<br>            self.loadingAnimationView.isHidden &#x3D; true<br>            self.loadingPagAnimationView.isHidden &#x3D; false<br>            let bundle &#x3D; BBCommonSwiftUIHelper.BBCommonSwiftUIBundle!<br>            if let filePath &#x3D; bundle.path(forResource: “Animation&#x2F;common_pagimg_loading”, ofType: “pag”) {<br>                let url &#x3D; NSURL(fileURLWithPath: filePath)<br>                loadingPagAnimationView.sd_setImage(with: url as URL) { [weak self]img, error, cacheType, url in</p>
@@ -175,234 +222,6 @@ if (self.loadingOffSetY  == 0)&#123;
 <p>例 navigationBar.dropButton.addTarget(self,action: #selector(dropButtonTapped),for: .touchUpInside)</p>
 <p>没网络：<br>        if BBSAppManager.default().status &#x3D;&#x3D; .notReachable {<br>            &#x2F;&#x2F;没网络<br>            GSCommonHelper.showNoNetToast()<br>            return<br>        }</p>
 <p>弹窗 安静模式的点击问号</p>
-<p>&#x2F;&#x2F;<br>&#x2F;&#x2F;  BBPenAddVipView.swift<br>&#x2F;&#x2F;  BBPenDeviceManager<br>&#x2F;&#x2F;<br>&#x2F;&#x2F;  Created by wanglin on 2023&#x2F;8&#x2F;7.<br>&#x2F;&#x2F;</p>
-<p>import UIKit<br>import BBDefinitionContainer<br>import BBCommonSwiftUI<br>import Then<br>import BBPenDataManager<br>import GSUIKit</p>
-<p>enum AddVipErrorCode:String {<br>    case Error_UserDevice &#x2F;&#x2F;&#x2F;“领取失败，当前账号与设备已解除绑定”<br>    case AddVipClose  &#x2F;&#x2F;&#x2F;“暂不支持领取”，提示并隐藏领取入口<br>    case Login  &#x2F;&#x2F;&#x2F;提示并自动退出当前账号<br>    case Error_AnotherAccount &#x2F;&#x2F;&#x2F;“领取失败，权益已被其他账号领取”，提示并移除该设备的VIP权益领取入口<br>}</p>
-<p>@objc protocol BBPenAddVipContentViewDelegate:NSObjectProtocol {<br>    &#x2F;&#x2F;&#x2F;&#x2F;确认领取<br>    @objc optional func addvipContentViewDidConfirmReceive(deviceID:String,addVipID:Int)<br>}</p>
-<p>class BBPenAddVipContentView: UIView {</p>
-<pre><code>weak var popup:BBPenPopup?
-weak var delegate:BBPenAddVipContentViewDelegate?
-var deviceID:String = &quot;&quot;
-var addVipID:Int = 0
-convenience init(deviceID:String,addVipID:Int) &#123;
-    self.init()
-    self.deviceID = deviceID
-    self.addVipID = addVipID
-&#125;
-
-lazy var backgroundImgView: UIImageView = &#123;
-    let imageView = UIImageView(image: UIImage.bb_bundle_imageName(name: &quot;pen_addvip_content_bg&quot;))
-    return imageView
-&#125;()
-
-lazy var foregroundImgView:UIImageView = UIImageView(image: .bb_bundle_imageName(name: &quot;pen_addvip_confirm_fore&quot;))
-
-lazy var titleLabe:UILabel = UILabel().then &#123; label in
-    let text = &quot;宝宝巴士SVIP领取须知&quot;
-    let prefix = &quot;宝宝巴士SVIP&quot;
-    let attributedText = NSMutableAttributedString(string: text,attributes: [.foregroundColor:&quot;#5E3823&quot;.bbColor,.font:UIFont.systemFont(ofSize: IS_IPAD ? 22.bbScale : 18.bbScale, weight: .semibold)])
-    attributedText.addAttributes([.foregroundColor:&quot;#DB6B00&quot;.bbColor], range: NSRange(location: 0, length: prefix.count))
-    label.attributedText = attributedText
-&#125;
-
-lazy var useContentView:BBPenAddVipContentSubView = BBPenAddVipContentSubView().then &#123; contentView in
-    contentView.titleLabel.text = &quot;SVIP权益仅限绑定设备的账号使用&quot;
-    let content = &quot;请确认是否由当前账号领取权益，若需要其他账号领取，需其他账号添加设备后在APP内操作；权益一经领取，仅领取的账号享有SVIP权益，无法通过更换手机号等方式进行权益转让。&quot;
-    let paraStyle = NSMutableParagraphStyle()
-    paraStyle.lineSpacing = IS_IPAD ? 4.bbScale : 3.bbScale
-    let attr = NSMutableAttributedString(string: content,attributes: [.foregroundColor:UIColor.cccGray2,.font:UIFont.systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular),.paragraphStyle:paraStyle])
-    contentView.contentLabel.attributedText = attr
-    contentView.layer.cornerRadius = 14.bbScale
-    contentView.layer.masksToBounds = true
-&#125;
-
-lazy var withDrawContentView:BBPenAddVipContentSubView = BBPenAddVipContentSubView().then &#123; contentView in
-    contentView.titleLabel.text = &quot;SVIP权益回收&quot;
-    let content = &quot;SVIP权益仅限购买并绑定设备的用户享有，若领取后发生退货情况，宝宝巴士有权回收已发放的权益。&quot;
-    let paraStyle = NSMutableParagraphStyle()
-    paraStyle.lineSpacing = IS_IPAD ? 4.bbScale : 3.bbScale
-    let attr = NSMutableAttributedString(string: content,attributes: [.foregroundColor:UIColor.cccGray2,.font:UIFont.systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular),.paragraphStyle:paraStyle])
-    contentView.contentLabel.attributedText = attr
-    contentView.layer.cornerRadius = 14.bbScale
-    contentView.layer.masksToBounds = true
-&#125;
-
-lazy var agreeButton:BBSButton = BBSButton().then &#123; button in
-    let width = IS_IPAD ? 23.bbScale : 20.bbScale
-    button.frame = CGRect(x: 0, y: 0, width: IS_IPAD ? 167.bbScale : 140.bbScale, height: width)
-    button.setTitle(&quot;我已阅读领取须知&quot;, for: .normal)
-    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_unselected&quot;), for: .normal)
-    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_unselected&quot;), for: [.normal,.highlighted])
-    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_selected&quot;), for: .selected)
-    button.setImage(.bb_bundle_imageName(name: &quot;pen_addvip_selected&quot;), for: [.selected,.highlighted])
-    button.setTitleColor(.black, for: .normal)
-    button.setTitleColor(.black, for: .highlighted)
-    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 16.bbScale : 14.bbScale, weight: .regular)
-    button.setImagePosition(.left, spacing: 4.bbScale)
-    button.imageRect = CGRect(x: 0, y: 0, width: width, height: width)
-    button.titleRect = CGRect(x: width + 4.bbScale, y: 0, width: IS_IPAD ? 140.bbScale : 126.bbScale, height: width)
-&#125;
-
-lazy var cancelButton:UIButton = UIButton(type: .custom).then &#123; button in
-    button.setTitle(&quot;暂不领取&quot;, for: .normal)
-    button.setTitleColor(&quot;#CA6647&quot;.bbColor, for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 16.bbScale , weight: .regular)
-</code></pre>
-<p>&#x2F;&#x2F;        button.backgroundColor &#x3D; “#E1C4A6”.bbColor<br>        button.bb_borderColor()(“#E1C4A6”.bbColor).bb_borderWidth()(1).bb_cornerRadius()(IS_IPAD ? 25.gsScale : 22.bbScale)<br>    }</p>
-<pre><code>lazy var confirmButton:UIButton = UIButton(type: .custom).then &#123; button in
-    button.setTitle(&quot;立即领取&quot;, for: .normal)
-    button.setTitleColor(&quot;#5E3823&quot;.bbColor, for: .normal)
-    button.titleLabel?.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 16.bbScale , weight: .regular)
-    button.backgroundColor = &quot;#FBE288&quot;.bbColor
-    button.bb_cornerRadius()(IS_IPAD ? 25.gsScale : 22.bbScale)
-&#125;
-
-
-//点击同意
-@objc func agreeAction(_ button:BBSButton) &#123;
-    button.isSelected = !button.isSelected
-&#125;
-
-@objc func cancelAction() &#123;
-</code></pre>
-<p>&#x2F;&#x2F;        if IS_IPAD {<br>&#x2F;&#x2F;            self.viewController().dismiss(animated: true)<br>&#x2F;&#x2F;        } else {<br>&#x2F;&#x2F;            self.popup?.dismiss()<br>&#x2F;&#x2F;        }<br>        self.popup?.dismiss()<br>    }</p>
-<pre><code>@objc func confirmAction() &#123;
-    if agreeButton.isSelected == false &#123;
-        self.hideToast(false)
-        self.toastMessage(&quot;请先阅读须知&quot;)
-        return
-    &#125;
-</code></pre>
-<p>&#x2F;&#x2F;        if IS_IPAD {<br>&#x2F;&#x2F;&#x2F;&#x2F;            self.viewController().dismiss(animated: true)<br>&#x2F;&#x2F;        } else {<br>&#x2F;&#x2F;            popup?.dismiss()<br>&#x2F;&#x2F;        }<br>        popup?.dismiss()<br>        delegate?.addvipContentViewDidConfirmReceive?(deviceID: deviceID, addVipID: addVipID)<br>    }</p>
-<pre><code>override init(frame: CGRect) &#123;
-    super.init(frame: frame)
-    self.setupViews()
-&#125;
-
-required init?(coder: NSCoder) &#123;
-    super.init(coder: coder)
-    self.setupViews()
-&#125;
-
-func setupViews() &#123;
-    
-    let leftInset = IS_IPAD ? 40.bbScale : 20.bbScale
-    
-    addSubview(backgroundImgView)
-    backgroundImgView.snp.makeConstraints &#123; make in
-        make.edges.equalToSuperview()
-        make.width.equalTo(IS_IPAD ? SCREEN_MIN : 375.bbScale)
-        make.height.equalTo(IS_IPAD ? 451.gsScale : 511.bbScale)
-    &#125;
-    
-    if IS_IPAD &#123;
-        addSubview(foregroundImgView)
-        foregroundImgView.snp.makeConstraints &#123; make in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview().offset(-20.bbScale)
-            make.height.equalTo(165.bbScale)
-        &#125;
-    &#125;
-    
-    addSubview(titleLabe)
-    titleLabe.snp.makeConstraints &#123; make in
-        make.top.equalTo(IS_IPAD ? 73.bbScale : 44.bbScale)
-        make.left.equalTo(leftInset)
-        make.height.equalTo(IS_IPAD ? 31.bbScale : 25.bbScale)
-    &#125;
-    
-    addSubview(useContentView)
-    useContentView.snp.makeConstraints &#123; make in
-        make.top.equalTo(titleLabe.snp.bottom).offset(IS_IPAD ? 40.bbScale : 16.bbScale)
-        make.left.equalTo(leftInset)
-        make.right.equalTo(-leftInset)
-    &#125;
-    
-    addSubview(withDrawContentView)
-    withDrawContentView.snp.makeConstraints &#123; make in
-        make.top.equalTo(useContentView.snp.bottom).offset(12.bbScale)
-        make.left.right.equalTo(useContentView)
-    &#125;
-    
-    addSubview(agreeButton)
-    agreeButton.addTarget(self, action: #selector(agreeAction(_:)), for: .touchUpInside)
-    agreeButton.snp.makeConstraints &#123; make in
-        make.left.equalTo(leftInset)
-        if kIsIPadX &#123;
-            make.top.equalTo(withDrawContentView.snp.bottom).offset(IS_IPAD ? 100.bbScale : 16.bbScale)
-        &#125;else &#123;
-            make.top.equalTo(withDrawContentView.snp.bottom).offset(IS_IPAD ? 153.bbScale : 16.bbScale)
-        &#125;
-       
-        make.height.equalTo(agreeButton.height)
-    &#125;
-    
-    addSubview(cancelButton)
-    cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
-    cancelButton.snp.makeConstraints &#123; make in
-        make.top.equalTo(agreeButton.snp.bottom).offset(IS_IPAD ? 12.bbScale : 20.bbScale)
-        make.left.equalTo(leftInset)
-        make.width.equalTo(IS_IPAD ? 130.gsScale : 120.bbScale)
-        make.height.equalTo(IS_IPAD ? 50.gsScale : 44.bbScale)
-    &#125;
-    
-    addSubview(confirmButton)
-    confirmButton.addTarget(self, action: #selector(confirmAction), for: .touchUpInside)
-    confirmButton.snp.makeConstraints &#123; make in
-        make.left.equalTo(cancelButton.snp.right).offset(IS_IPAD ? 24.bbScale : 16.bbScale)
-        make.centerY.equalTo(cancelButton)
-        make.right.equalTo(-leftInset)
-        make.height.equalTo(IS_IPAD ? 50.gsScale : 44.bbScale)
-    &#125;
-&#125;
-
-deinit &#123;
-    debugPrint(&quot;AddVipContentViewDeinit&quot;)
-&#125;
-</code></pre>
-<p>}</p>
-<p>class BBPenAddVipContentSubView: UIView {</p>
-<pre><code>lazy var titleLabel:UILabel = UILabel().then &#123; label in
-    label.textColor = .cccGray1
-    label.font = .systemFont(ofSize: IS_IPAD ? 18.bbScale : 15.bbScale, weight: .semibold)
-&#125;
-
-lazy var contentLabel:UILabel = UILabel().then &#123; label in
-    label.textColor = .cccGray2
-    label.numberOfLines = 0
-    label.font = .systemFont(ofSize: IS_IPAD ? 15.bbScale : 14.bbScale, weight: .regular)
-&#125;
-
-override init(frame: CGRect) &#123;
-    super.init(frame: frame)
-    self.setupViews()
-&#125;
-
-required init?(coder: NSCoder) &#123;
-    super.init(coder: coder)
-    self.setupViews()
-&#125;
-
-func setupViews() &#123;
-    
-    backgroundColor = .white
-    
-    addSubview(titleLabel)
-    titleLabel.snp.makeConstraints &#123; make in
-        make.left.top.equalTo(16.bbScale)
-        make.right.equalTo(-16.bbScale)
-        make.height.equalTo(IS_IPAD ? 25.bbScale : 21.bbScale)
-    &#125;
-    
-    addSubview(contentLabel)
-    contentLabel.snp.makeConstraints &#123; make in
-        make.top.equalTo(titleLabel.snp.bottom).offset(12.bbScale)
-        make.left.equalTo(16.bbScale)
-        make.right.bottom.equalTo(-16.bbScale)
-    &#125;
-&#125;
-</code></pre>
-<p>}</p>
 
       
     </div>
@@ -825,80 +644,6 @@ BBSAudioManager.default().collectMedia(!button.isSelected) &#123; [weak self] is
 
 
   
-    <article id="post-网络请求" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/" class="article-date">
-  <time class="dt-published" datetime="2024-05-10T02:40:30.000Z" itemprop="datePublished">2024-05-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/05/10/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/">网络接口</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>为什么我们要用代理而不是直接把想做的事情放在AFNetworking的Block里面呢<br>Block是轻量级的代码块，虽然使用简单，但是非常的封闭，与外部（Block外）进行数据交换的能力非常的有限<br>Delegate的核心的作用就是来实现类之间的数据传递</p>
-<h2 id="AFNetworking"><a href="#AFNetworking" class="headerlink" title="AFNetworking"></a>AFNetworking</h2><p><code>AFNetworking</code>是Objective-C语言中最常用的网络库之一。</p>
-<h3 id="GET请求"><a href="#GET请求" class="headerlink" title="GET请求"></a>GET请求</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AFHTTPSessionManager</span> <span class="operator">*</span>manager <span class="operator">=</span> [<span class="type">AFHTTPSessionManager</span> manager];</span><br><span class="line">[manager <span class="type">GET</span>:@<span class="string">&quot;https://api.example.com/get&quot;</span> parameters:<span class="literal">nil</span> headers:<span class="literal">nil</span> progress:<span class="literal">nil</span> success:<span class="operator">^</span>(<span class="type">NSURLSessionTask</span> <span class="operator">*</span>task, id responseObject) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;JSON: %@&quot;</span>, responseObject);</span><br><span class="line">&#125; failure:<span class="operator">^</span>(<span class="type">NSURLSessionTask</span> <span class="operator">*</span>operation, <span class="type">NSError</span> <span class="operator">*</span>error) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Error: %@&quot;</span>, error);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-
-<h3 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AFHTTPSessionManager</span> <span class="operator">*</span>manager <span class="operator">=</span> [<span class="type">AFHTTPSessionManager</span> manager];</span><br><span class="line"><span class="type">NSDictionary</span> <span class="operator">*</span>parameters <span class="operator">=</span> @&#123;@<span class="string">&quot;key1&quot;</span>: @<span class="string">&quot;value1&quot;</span>, @<span class="string">&quot;key2&quot;</span>: @<span class="string">&quot;value2&quot;</span>&#125;;</span><br><span class="line">[manager <span class="type">POST</span>:@<span class="string">&quot;https://api.example.com/post&quot;</span> parameters:parameters headers:<span class="literal">nil</span> progress:<span class="literal">nil</span> success:<span class="operator">^</span>(<span class="type">NSURLSessionDataTask</span> <span class="operator">*</span>task, id responseObject) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Success: %@&quot;</span>, responseObject);</span><br><span class="line">&#125; failure:<span class="operator">^</span>(<span class="type">NSURLSessionDataTask</span> <span class="operator">*</span>task, <span class="type">NSError</span> <span class="operator">*</span>error) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Error: %@&quot;</span>, error);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-
-<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AFHTTPSessionManager</span> <span class="operator">*</span>manager <span class="operator">=</span> [<span class="type">AFHTTPSessionManager</span> manager];</span><br><span class="line"><span class="type">NSURL</span> <span class="operator">*</span>filePath <span class="operator">=</span> [<span class="type">NSURL</span> fileURLWithPath:@<span class="string">&quot;file://path/to/image.png&quot;</span>];</span><br><span class="line">[manager <span class="type">POST</span>:@<span class="string">&quot;https://api.example.com/upload&quot;</span> parameters:<span class="literal">nil</span> headers:<span class="literal">nil</span> constructingBodyWithBlock:<span class="operator">^</span>(id<span class="operator">&lt;</span><span class="type">AFMultipartFormData</span><span class="operator">&gt;</span> formData) &#123;</span><br><span class="line">    [formData appendPartWithFileURL:filePath name:@<span class="string">&quot;image&quot;</span> fileName:@<span class="string">&quot;image.png&quot;</span> mimeType:@<span class="string">&quot;image/png&quot;</span> error:<span class="literal">nil</span>];</span><br><span class="line">&#125; progress:<span class="literal">nil</span> success:<span class="operator">^</span>(<span class="type">NSURLSessionDataTask</span> <span class="operator">*</span>task, id responseObject) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Success: %@&quot;</span>, responseObject);</span><br><span class="line">&#125; failure:<span class="operator">^</span>(<span class="type">NSURLSessionDataTask</span> <span class="operator">*</span>task, <span class="type">NSError</span> <span class="operator">*</span>error) &#123;</span><br><span class="line">    <span class="type">NSLog</span>(@<span class="string">&quot;Error: %@&quot;</span>, error);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
-<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSURLRequest</span> <span class="operator">*</span>request <span class="operator">=</span> [<span class="type">NSURLRequest</span> requestWithURL:[<span class="type">NSURL</span> <span class="type">URLWithString</span>:@<span class="string">&quot;https://api.example.com/file.zip&quot;</span>]];</span><br><span class="line"><span class="type">AFHTTPSessionManager</span> <span class="operator">*</span>manager <span class="operator">=</span> [<span class="type">AFHTTPSessionManager</span> manager];</span><br><span class="line"><span class="type">NSURLSessionDownloadTask</span> <span class="operator">*</span>downloadTask <span class="operator">=</span> [manager downloadTaskWithRequest:request progress:<span class="literal">nil</span> destination:<span class="operator">^</span><span class="type">NSURL</span> <span class="operator">*</span>(<span class="type">NSURL</span> <span class="operator">*</span>targetPath, <span class="type">NSURLResponse</span> <span class="operator">*</span>response) &#123;</span><br><span class="line">    <span class="type">NSURL</span> <span class="operator">*</span>documentsDirectoryURL <span class="operator">=</span> [[<span class="type">NSFileManager</span> defaultManager] <span class="type">URLForDirectory</span>:<span class="type">NSDocumentDirectory</span> inDomain:<span class="type">NSUserDomainMask</span> appropriateForURL:<span class="literal">nil</span> create:<span class="type">NO</span> error:<span class="literal">nil</span>];</span><br><span class="line">    <span class="keyword">return</span> [documentsDirectoryURL <span class="type">URLByAppendingPathComponent</span>:[response suggestedFilename]];</span><br><span class="line">&#125; completionHandler:<span class="operator">^</span>(<span class="type">NSURLResponse</span> <span class="operator">*</span>response, <span class="type">NSURL</span> <span class="operator">*</span>filePath, <span class="type">NSError</span> <span class="operator">*</span>error) &#123;</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        <span class="type">NSLog</span>(@<span class="string">&quot;Error: %@&quot;</span>, error);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="type">NSLog</span>(@<span class="string">&quot;File downloaded to: %@&quot;</span>, filePath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[downloadTask resume];</span><br></pre></td></tr></table></figure>
-<h3 id="监听网络状态"><a href="#监听网络状态" class="headerlink" title="监听网络状态"></a>监听网络状态</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AFNetworkReachabilityManager</span> <span class="operator">*</span>reachabilityManager <span class="operator">=</span> [<span class="type">AFNetworkReachabilityManager</span> sharedManager];</span><br><span class="line">[reachabilityManager setReachabilityStatusChangeBlock:<span class="operator">^</span>(<span class="type">AFNetworkReachabilityStatus</span> status) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (status) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="type">AFNetworkReachabilityStatusNotReachable</span>:</span><br><span class="line">            <span class="type">NSLog</span>(@<span class="string">&quot;No Internet Connection&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="type">AFNetworkReachabilityStatusReachableViaWiFi</span>:</span><br><span class="line">            <span class="type">NSLog</span>(@<span class="string">&quot;WiFi Connection&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="type">AFNetworkReachabilityStatusReachableViaWWAN</span>:</span><br><span class="line">            <span class="type">NSLog</span>(@<span class="string">&quot;Cellular Connection&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="type">NSLog</span>(@<span class="string">&quot;Unknown Network Status&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[reachabilityManager startMonitoring];</span><br></pre></td></tr></table></figure>
-<h2 id="Moya"><a href="#Moya" class="headerlink" title="Moya"></a>Moya</h2><p>Moya是对Alamofire的封装，Moya 将网络请求封装为 TargetType 协议的实现，每个 endpoint 对应一个 enum 的 case</p>
-<p>##先定义TargetType协议的枚举来配置网络请求</p>
-<ul>
-<li>TargetType 是 Moya 的核心，每个网络请求都基于它来配置。它要求定义几个基本但关键的属性：</li>
-<li>baseURL （基础URL）：所有请求的基本URL。</li>
-<li>path （路径）：与 baseURL 结合，形成完整的请求URL。</li>
-<li>method （方法）：HTTP请求的方法，如 GET、POST 等。</li>
-<li>task （任务）：定义请求的具体内容，如是否有参数，参数是怎样编码的，是否上传文件等。</li>
-<li>task 是 TargetType 中最复杂的部分，它定义了发送请求时的具体行为和数据。task 有几种类型，每种类型适用于不同的网络请求场景：<br>– requestPlain：发送一个基本的请求，不带任何参数。<br>– requestData(Data)：允许你发送一些二进制数据作为请求体。<br>– requestParameters(parameters: [String: Any], encoding: ParameterEncoding)：使用这种类型可以发送带参数的请求。参数可以是 .url、.json、.formData 等格式编码。<br>– requestCompositeData(bodyData: Data, urlParameters: [String: Any])：允许在同一个请求中同时发送 URL 参数和请求体数据。<br>– uploadMultipart([MultipartFormData])：用于上传文件或数据时，可以构建复杂的多部分请求体。</li>
-<li>headers （头部）：为请求指定 HTTP 头部。<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Moya</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">MyService</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> zen</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">MyService</span>: <span class="title class_">TargetType</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> baseURL: <span class="type">URL</span> &#123; <span class="keyword">return</span> <span class="type">URL</span>(string: <span class="string">&quot;https://api.github.com&quot;</span>)<span class="operator">!</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> path: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .zen:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;/zen&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> method: <span class="type">Moya</span>.<span class="type">Method</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> .get</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> sampleData: <span class="type">Data</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Half measures are as bad as nothing at all.&quot;</span>.utf8Encoded</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> task: <span class="type">Task</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> .requestPlain</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> headers: [<span class="type">String</span>: <span class="type">String</span>]<span class="operator">?</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">&quot;Content-type&quot;</span>: <span class="string">&quot;application/json&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以使用 Moya 的扩展方法来简化数据处理，如：</li>
-<li>response.mapJSON(): 将响应数据映射为 JSON 对象。</li>
-<li>response.map(): 将响应数据映射为指定的数据模型，通常需要遵循 Decodable 协议<br>使用Moya的provider来发送请求：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">MoyaProvider</span>&lt;<span class="type">MyService</span>&gt;()</span><br><span class="line">provider.request(.zen) &#123; result <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> result &#123;</span><br><span class="line">    <span class="keyword">case</span> .success(<span class="keyword">let</span> response):</span><br><span class="line">        <span class="keyword">let</span> data <span class="operator">=</span> response.data</span><br><span class="line">        <span class="keyword">let</span> string <span class="operator">=</span> <span class="type">String</span>(data: data, encoding: .utf8)</span><br><span class="line">        <span class="built_in">print</span>(string)</span><br><span class="line">    <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="built_in">print</span>(error)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-使用插件<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 日志记录插件</span></span><br><span class="line"><span class="keyword">let</span> loggingPlugin <span class="operator">=</span> <span class="type">NetworkLoggerPlugin</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 认证插件</span></span><br><span class="line"><span class="keyword">let</span> authPlugin <span class="operator">=</span> <span class="type">AccessTokenPlugin</span> &#123; () -&gt; <span class="type">String</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;your_access_token&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建带插件的Provider</span></span><br><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">MoyaProvider</span>&lt;<span class="type">MyService</span>&gt;(plugins: [loggingPlugin, authPlugin])</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="集成响应式编程"><a href="#集成响应式编程" class="headerlink" title="集成响应式编程"></a>集成响应式编程</h3><p><strong>Moya 可以与 RxSwift 或 Combine 集成</strong></p>
-<ul>
-<li>使用RxSwift<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">MoyaProvider</span>&lt;<span class="type">MyAPI</span>&gt;().rx</span><br><span class="line">provider.request(.getUser(id: <span class="number">123</span>))</span><br><span class="line">    .map(<span class="type">User</span>.<span class="keyword">self</span>)</span><br><span class="line">    .subscribe(onSuccess: &#123; user <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Received user: <span class="subst">\(user.name)</span>&quot;</span>)</span><br><span class="line">    &#125;, onError: &#123; error <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Received error: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    .disposed(by: disposeBag)</span><br></pre></td></tr></table></figure></li>
-<li>使用Combine<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">MoyaProvider</span>&lt;<span class="type">MyAPI</span>&gt;()</span><br><span class="line"><span class="keyword">let</span> cancellable <span class="operator">=</span> provider.requestPublisher(.getUser(id: <span class="number">123</span>))</span><br><span class="line">    .map(<span class="type">User</span>.<span class="keyword">self</span>)</span><br><span class="line">    .sink(receiveCompletion: &#123; completion <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">case</span> <span class="keyword">let</span> .failure(error) <span class="operator">=</span> completion &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Error: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, receiveValue: &#123; user <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Received user: <span class="subst">\(user.name)</span>&quot;</span>)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="Alamofire"><a href="#Alamofire" class="headerlink" title="Alamofire"></a>Alamofire</h2><p>Swift 的Http网络库</p>
-<h3 id="GET请求-1"><a href="#GET请求-1" class="headerlink" title="GET请求"></a>GET请求</h3><p>import Alamofire</p>
-<p>AF.request(“<a target="_blank" rel="noopener" href="https://api.example.com/get%22).response">https://api.example.com/get&quot;).response</a> { response in<br>    debugPrint(response)<br>}</p>
-<h3 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import Alamofire</span><br><span class="line"></span><br><span class="line">let parameters: [String: Any] = [</span><br><span class="line">    &quot;username&quot;: &quot;user123&quot;,</span><br><span class="line">    &quot;password&quot;: &quot;pass123&quot;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">AF.request(&quot;https://api.example.com/login&quot;, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default).responseJSON &#123; response in</span><br><span class="line">    switch response.result &#123;</span><br><span class="line">    case .success(let data):</span><br><span class="line">        print(&quot;Success: \(data)&quot;)</span><br><span class="line">    case .failure(let error):</span><br><span class="line">        print(&quot;Error: \(error)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上传</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Alamofire</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> imageData <span class="operator">=</span> <span class="type">Data</span>() <span class="comment">// 假设这里有图像数据</span></span><br><span class="line"><span class="type">AF</span>.upload(multipartFormData: &#123; multipartFormData <span class="keyword">in</span></span><br><span class="line">    multipartFormData.append(imageData, withName: <span class="string">&quot;file&quot;</span>, fileName: <span class="string">&quot;file.jpg&quot;</span>, mimeType: <span class="string">&quot;image/jpeg&quot;</span>)</span><br><span class="line">&#125;, to: <span class="string">&quot;https://api.example.com/upload&quot;</span>).response &#123; response <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> response.result &#123;</span><br><span class="line">    <span class="keyword">case</span> .success(<span class="keyword">_</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Upload Success&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Upload Failure: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Alamofire中把整个网络请求从创建请求到响应完成中可能出现的错误，全部封装为AFError枚举对象，并且该枚举的值，大部分都为带参枚举，甚至带有多级参数，在AFError内部定义了多个子枚举来代表不同类型的错误，并扩展AFError，AFError枚举所列出的错误类型，大部分类型都带有参数，用来描述详细的二级错误类型</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/10/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/" data-id="cly5m92ny000jq4ax1lq19foq" data-title="网络接口" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -935,6 +680,10 @@ Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以�
       <ul>
         
           <li>
+            <a href="/2024/07/26/learn/">learn</a>
+          </li>
+        
+          <li>
             <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
           </li>
         
@@ -948,10 +697,6 @@ Moya 返回的 Response 对象包含了完整的 HTTP 响应数据。你可以�
         
           <li>
             <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/">ios缓存</a>
           </li>
         
       </ul>
