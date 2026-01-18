@@ -104,7 +104,7 @@ deploy:
   type: git
   repository:
     github: https://github.com/032002110/032002110.github.io.git
-  branch: master
+  branch: main
 
 archive_generator:
     per_page: 10

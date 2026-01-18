@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>第一次实际开发遇到的各种问题总结 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1️⃣遇到异步操作使用闭包作为参数，使得接收最后函数执行后得到结果 12345678910111213public func getAlbumAudioInfo(completeBlock:@escaping(Bool)-&gt;Void)&#123;    if  &#123;    &#125;else &#123;        if let _ &#x3D; self.getAlumInfo() &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一次实际开发遇到的各种问题总结">
+<meta property="og:url" content="http://example.com/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1️⃣遇到异步操作使用闭包作为参数，使得接收最后函数执行后得到结果 12345678910111213public func getAlbumAudioInfo(completeBlock:@escaping(Bool)-&gt;Void)&#123;    if  &#123;    &#125;else &#123;        if let _ &#x3D; self.getAlumInfo() &amp;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-17T07:16:57.000Z">
+<meta property="article:modified_time" content="2026-01-14T15:17:18.474Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-第一次实际开发遇到的各种问题总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2024-06-17T07:16:57.000Z" itemprop="datePublished">2024-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      第一次实际开发遇到的各种问题总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>1️⃣遇到异步操作使用闭包作为参数，使得接收最后函数执行后得到结果</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">getAlbumAudioInfo</span>(<span class="params">completeBlock</span>:<span class="keyword">@escaping</span>(<span class="type">Bool</span>)-&gt;<span class="type">Void</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>  &#123;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="keyword">_</span> <span class="operator">=</span> <span class="keyword">self</span>.getAlumInfo() &#123;</span><br><span class="line">            completeBlock(<span class="literal">true</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">guard</span> radioService<span class="operator">!</span>.isLoading <span class="operator">==</span> <span class="literal">false</span> <span class="keyword">else</span> &#123;<span class="keyword">return</span>&#125;</span><br><span class="line">    radioService<span class="operator">?</span>.loadData(completion: &#123; isSuccess <span class="keyword">in</span></span><br><span class="line">        completeBlock(isSuccess)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>异步操作意味着该操作会在当前函数执行流之外进行，不会阻塞当前函数的继续执行。执行过程如下</p>
+<ul>
+<li>getAlbumAudioInfo函数开始执行。</li>
+<li>函数内部进行一些同步的检查和初始化。</li>
+<li>调用radioService?.loadData(completion:)启动异步数据加载。</li>
+<li>getAlbumAudioInfo函数继续执行到末尾并返回，此时异步数据加载可能还没有完成。</li>
+<li>在将来的某个时间点，异步数据加载完成，radioService调用completion闭包（即completeBlock），此时getAlbumAudioInfo函数早已执行完毕。</li>
+</ul>
+<p>2️⃣旋转函数的使用</p>
+<p>3️⃣ 单一原则 </p>
+<p>现在 pag<br>            self.loadingAnimationView.isHidden &#x3D; true<br>            self.loadingPagAnimationView.isHidden &#x3D; false<br>            let bundle &#x3D; BBCommonSwiftUIHelper.BBCommonSwiftUIBundle!<br>            if let filePath &#x3D; bundle.path(forResource: “Animation&#x2F;common_pagimg_loading”, ofType: “pag”) {<br>                let url &#x3D; NSURL(fileURLWithPath: filePath)<br>                loadingPagAnimationView.sd_setImage(with: url as URL) { [weak self]img, error, cacheType, url in</p>
+<pre><code>   loadingView.showAnimation()
+if (self.loadingOffSetY  == 0)&#123;
+    [self.view bb_ShowLoadingViewWithTitle:self.loadingDataTipString isHiddenNavBar:NO offsetCenterY:BBWidth(-50) offsetTop:0 bgColor:UIColor.clearColor isPagLoading:isPagLoading];
+</code></pre>
+<p>关于适配ipad 和 布局调整这一块</p>
+<pre><code>        很多时候top值不用offset谁 bottom也是 
+        make.top.bottom.equalTo(self)不用写height
+
+        有时候图片有问题（大小看上去和设定不一样）可能真的是下载的图片有问题
+        
+                    make.top.equalTo(self.contentScrollView.snp.bottom)
+                    因为scrollView第一个开始是没有长高的。所以第一个元素是这么写的
+</code></pre>
+<p>问题1️⃣ 导航栏那个回退图标，我看ui图不是在正中为啥设置在正中</p>
+<p>如何解决渐变色<br>        contentView.layer.addSublayer(self.gradientLayer)</p>
+<p>按钮通常是这么构成的<br>        self.addSubview(self.lblTitle)<br>        self.addSubview(self.imgView)<br>        self.addSubview(self.btnBox)</p>
+<p>字体 let attributedText &#x3D; NSMutableAttributedString(string: text,attributes:[.foregroundColor:”5E3823”.bbColor,.font:UIFont.systemFont(ofSize: IS_IPAD ? 20.bbScale : 18.bbScale,weight: semibold)</p>
+<p>regular - 常规 semibold - 半粗 bold - 粗体 400 500 600</p>
+<p>如何收藏音频<br>    func collectionAudio(audioID:Int,albumID:Int,completeBlock:@escaping(Error?,Bool)-&gt;Void){</p>
+<pre><code>    GSCollectManager.collectRadioStationAudio(true, audioID: GSCollectIDType(audioID), albumID: GSCollectIDType(albumID)) &#123; error, isSuccess in
+        if error == nil &#123;
+            completeBlock(nil,true)
+        &#125;else &#123;
+            completeBlock(error,false)
+        &#125;
+       
+    &#125;
+    
+&#125;
+</code></pre>
+<ul>
+<li>如何监听一个元素变化，并使他变化后进行一系列操作<br>扩展 Notification.Name 来定义一个新的通知名称 isSelectedChanged<br>extension Notification.Name {<br>  static let isSelectedChanged &#x3D; Notification.Name(“isSelectedChanged”)<br>}<br>使用 NotificationCenter 的 addObserver 方法来注册当前对象（self）作为观察者，以监听 isSelectedChanged 通知。当此通知被发送时，将调用 handleSelectionChange(notification:) 方法来响应。<br>  NotificationCenter.default.addObserver(self, selector: #selector(handleSelectionChange(notification:)), name: .isSelectedChanged, object:nil)</li>
+</ul>
+<p>使用 NotificationCenter 的 post 方法来发送通知。如果条件满足，发送 isSelectedChanged 通知，并将 vm.tagModelList[indexRow] 作为通知的对象。<br>        if(indexRow &lt; self.vm.tagModelList.count){<br>            NotificationCenter.default.post(name: .isSelectedChanged, object: self.vm.tagModelList[indexRow]  , userInfo: nil)<br>        }else {<br>            print(“索引越界！”)<br>        }</p>
+<p>例 navigationBar.dropButton.addTarget(self,action: #selector(dropButtonTapped),for: .touchUpInside)</p>
+<p>没网络：<br>        if BBSAppManager.default().status &#x3D;&#x3D; .notReachable {<br>            &#x2F;&#x2F;没网络<br>            GSCommonHelper.showNoNetToast()<br>            return<br>        }</p>
+<p>弹窗 安静模式的点击问号</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" data-id="cmkjuic4a000km8txejcbgzju" data-title="第一次实际开发遇到的各种问题总结" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          bug_图片变形
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/06/05/%E9%9F%B3%E9%A2%91%E6%A8%A1%E5%9D%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">音频模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">January 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/18/String-Catalog%E8%B0%83%E7%A0%94/">String Catalog调研</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/14/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/26/learn/">learn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
