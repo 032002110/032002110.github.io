@@ -103,7 +103,7 @@ theme: landscape
 deploy:
   type: git
   repository:
-    github: https://github.com/032002110/032002110.github.io.git
+    github: git@github.com:032002110/032002110.github.io.git
   branch: main
 
 archive_generator:
