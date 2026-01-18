@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ios缓存 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="概述在iOS中缓存主要分为两种，一种是内存缓存一种是磁盘缓存。内存缓存提供容量小但是高速的存取功能，磁盘缓存提供容量大但是低速的存取功能。在使用的时候一般是将最近的数据（如一天）存储在内存缓存中；将超出最近时间而又在合适时间内的数据（如超过一天在一周内）从内存缓存中清除，将其存储在磁盘缓存中；将超出最大时间（如超过一周）的数据从磁盘中销毁。 内存缓存UserDefaults 用途：存储少量用户设置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ios缓存">
+<meta property="og:url" content="http://example.com/2024/05/17/ios%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述在iOS中缓存主要分为两种，一种是内存缓存一种是磁盘缓存。内存缓存提供容量小但是高速的存取功能，磁盘缓存提供容量大但是低速的存取功能。在使用的时候一般是将最近的数据（如一天）存储在内存缓存中；将超出最近时间而又在合适时间内的数据（如超过一天在一周内）从内存缓存中清除，将其存储在磁盘缓存中；将超出最大时间（如超过一周）的数据从磁盘中销毁。 内存缓存UserDefaults 用途：存储少量用户设置">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/lock.png">
+<meta property="article:published_time" content="2024-05-17T03:37:34.000Z">
+<meta property="article:modified_time" content="2026-01-18T15:07:57.782Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/lock.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ios缓存" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/17/ios%E7%BC%93%E5%AD%98/" class="article-date">
+  <time class="dt-published" datetime="2024-05-17T03:37:34.000Z" itemprop="datePublished">2024-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ios缓存
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在iOS中缓存主要分为两种，一种是内存缓存一种是磁盘缓存。内存缓存提供容量小但是高速的存取功能，磁盘缓存提供容量大但是低速的存取功能。在使用的时候一般是将最近的数据（如一天）存储在内存缓存中；将超出最近时间而又在合适时间内的数据（如超过一天在一周内）从内存缓存中清除，将其存储在磁盘缓存中；将超出最大时间（如超过一周）的数据从磁盘中销毁。</p>
+<h2 id="内存缓存"><a href="#内存缓存" class="headerlink" title="内存缓存"></a>内存缓存</h2><h3 id="UserDefaults"><a href="#UserDefaults" class="headerlink" title="UserDefaults"></a>UserDefaults</h3><ul>
+<li><strong>用途</strong>：存储少量用户设置或配置。</li>
+<li><strong>优点</strong>：简单易用。</li>
+<li><strong>缺点</strong>：不适合存储大量数据。<br>当你对 UserDefaults 进行修改后，系统会自动将这些改动写入到磁盘。这个写入过程是异步进行的，因此不会立即反映。如果需要立即将更改同步到磁盘，可以调用 synchronize() 方法，但这通常是不必要的，因为 iOS 系统会管理好这个过程。</li>
+</ul>
+<h3 id="NSCache"><a href="#NSCache" class="headerlink" title="NSCache"></a>NSCache</h3><ul>
+<li><strong>用途</strong>：内存中缓存大量临时数据。</li>
+<li><strong>优点</strong>：自动管理内存，防止应用占用过多内存。</li>
+<li><strong>缺点</strong>：数据不会被持久化存储。<br>它是线程安全并不retain key。它的底层直接调用了 libcache.dylib，通过pthead_mutex（互斥锁）完成了线程安全。但是由于它的性能和key值的相似度有关，如果有大量相似的key的话，NSCache的存取性能下降地厉害。</li>
+</ul>
+<h3 id="不同类锁的速度"><a href="#不同类锁的速度" class="headerlink" title="不同类锁的速度"></a>不同类锁的速度</h3><p><img src="/images/lock.png"></p>
+<h3 id="磁盘缓存"><a href="#磁盘缓存" class="headerlink" title="磁盘缓存"></a>磁盘缓存</h3><ul>
+<li><strong>用途</strong>：持久化存储大量数据。</li>
+<li><strong>方法</strong>：通过<code>FileManager</code>操作文件系统。</li>
+<li><strong>优点</strong>：适合存储大数据量，如离线数据。</li>
+<li><strong>缺点</strong>：读写速度慢于内存。</li>
+</ul>
+<h3 id="第三方库"><a href="#第三方库" class="headerlink" title="第三方库"></a>第三方库</h3><ul>
+<li><strong>例如</strong>：<code>Kingfisher</code>（图片缓存），<code>AlamofireImage</code>。</li>
+<li><strong>优点</strong>：提供高级功能，如图片解码和内存管理。</li>
+<li><strong>缺点</strong>：增加应用依赖。</li>
+</ul>
+<h2 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h2><ul>
+<li><strong>选择依据</strong>：数据的大小、更新频率和用户访问模式。</li>
+<li><strong>时效性与一致性</strong>：确定数据需要多久更新一次，以及在应用中需要保持多高的数据一致性。</li>
+<li><strong>资源利用平衡</strong>：根据应用的具体需求和设备能力，平衡内存与磁盘的使用，确保应用运行流畅不占用过多系统资源。</li>
+</ul>
+<h2 id="实现示例"><a href="#实现示例" class="headerlink" title="实现示例"></a>实现示例</h2><h3 id="简单的-UserDefaults-示例"><a href="#简单的-UserDefaults-示例" class="headerlink" title="简单的 UserDefaults 示例"></a>简单的 UserDefaults 示例</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存一个简单的用户偏好设置</span></span><br><span class="line"><span class="type">UserDefaults</span>.standard.set(<span class="literal">true</span>, forKey: <span class="string">&quot;DarkModeEnabled&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取用户偏好设置</span></span><br><span class="line"><span class="keyword">let</span> darkModeEnabled <span class="operator">=</span> <span class="type">UserDefaults</span>.standard.bool(forKey: <span class="string">&quot;DarkModeEnabled&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> cache <span class="operator">=</span> <span class="type">NSCache</span>&lt;<span class="type">NSString</span>, <span class="type">AnyObject</span>&gt;()</span><br><span class="line">cache.setObject(someData, forKey: <span class="string">&quot;CachedDataKey&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从缓存获取数据</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> cache.object(forKey: <span class="string">&quot;CachedDataKey&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用缓存数据</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> cache <span class="operator">=</span> <span class="type">NSCache</span>&lt;<span class="type">NSString</span>, <span class="type">AnyObject</span>&gt;()</span><br><span class="line">cache.setObject(someData, forKey: <span class="string">&quot;CachedDataKey&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从缓存获取数据</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> cache.object(forKey: <span class="string">&quot;CachedDataKey&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">// 使用缓存数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/17/ios%E7%BC%93%E5%AD%98/" data-id="cmkjw5tnz000bgktxeq7n15vv" data-title="ios缓存" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/17/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          文件操作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/05/16/swift-05/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">swift_05</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">January 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/18/String-Catalog%E8%B0%83%E7%A0%94/">String Catalog调研</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/26/learn/">learn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

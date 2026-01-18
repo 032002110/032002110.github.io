@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>混合开发 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="桥接头文件配置当在swift 项目中.创建一个objective-c的类 会有提示 选择 Create Bridging HeaderBridging Header 文件中导入所有的需要使用的 Objective-C 类的头文件通过#import “x” 使得在swift文件中可以调用oc文件的接口 调用时出现的问题由于Objective-C和Swift中类型不完全一样。使得在swift定义的mo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="混合开发">
+<meta property="og:url" content="http://example.com/2024/05/14/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="桥接头文件配置当在swift 项目中.创建一个objective-c的类 会有提示 选择 Create Bridging HeaderBridging Header 文件中导入所有的需要使用的 Objective-C 类的头文件通过#import “x” 使得在swift文件中可以调用oc文件的接口 调用时出现的问题由于Objective-C和Swift中类型不完全一样。使得在swift定义的mo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-14T02:33:44.000Z">
+<meta property="article:modified_time" content="2026-01-18T15:07:57.784Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-混合开发" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/14/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/" class="article-date">
+  <time class="dt-published" datetime="2024-05-14T02:33:44.000Z" itemprop="datePublished">2024-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      混合开发
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="桥接头文件配置"><a href="#桥接头文件配置" class="headerlink" title="桥接头文件配置"></a>桥接头文件配置</h2><p>当在swift 项目中.创建一个objective-c的类 会有提示 选择 Create Bridging Header<br>Bridging Header 文件中导入所有的需要使用的 Objective-C 类的头文件<br>通过#import “x” 使得在swift文件中可以调用oc文件的接口</p>
+<h3 id="调用时出现的问题"><a href="#调用时出现的问题" class="headerlink" title="调用时出现的问题"></a>调用时出现的问题</h3><p>由于Objective-C和Swift中类型不完全一样。使得在swift定义的model可能无法被Oc接口使用。<br>例如Objective-C中nil 可以用于任何对象。在swift文件中只有可选类型才能被设为nil。<br>swift的枚举和sturct都需要特别标记才能在Objective-C中使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import Foundation</span><br><span class="line"></span><br><span class="line">// Swift 枚举</span><br><span class="line">enum VehicleType: String &#123;</span><br><span class="line">    case car = &quot;Car&quot;</span><br><span class="line">    case motorcycle = &quot;Motorcycle&quot;</span><br><span class="line">    case bicycle = &quot;Bicycle&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Swift 结构体</span><br><span class="line">struct Vehicle &#123;</span><br><span class="line">    var make: String</span><br><span class="line">    var model: String</span><br><span class="line">    var type: VehicleType</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Swift 类</span><br><span class="line">class Garage: NSObject &#123;</span><br><span class="line">    var vehicles: [Vehicle] = []</span><br><span class="line">    </span><br><span class="line">    func addVehicle(_ vehicle: Vehicle) &#123;</span><br><span class="line">        vehicles.append(vehicle)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果在Oc中使用将会失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void useSwiftModelInObjectiveC() &#123;</span><br><span class="line">    Vehicle *myVehicle = [[Vehicle alloc] initWithMake:@&quot;Honda&quot; model:@&quot;Civic&quot; type:VehicleTypeCar];</span><br><span class="line">    Garage *myGarage = [[Garage alloc] init];</span><br><span class="line">    [myGarage addVehicle:myVehicle]; // 这里会出现错误</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1.结构体问题：Objective-C 不能直接创建或操作 Swift 的 struct，因为 Objective-C 仅支持类。</li>
+<li>2.枚举问题：尽管 Swift 的枚举可以通过 @objc 显式地映射到 Objective-C，但这仅限于整型值的枚举。在上面的 Swift 代码中，VehicleType 使用了字符串作为原始值，这在 Objective-C 中无法直接使用。</li>
+<li>3.泛型和复杂集合：如果 Swift 类使用了泛型或包含 Swift 特定集合（如 Array<Vehicle>），这些在 Objective-C 中也不能直接使用。<br><strong>解决方案：用 NSObject 的子类来替换 Swift 的 struct。确保枚举是基于整型，并通过 @objc 标记。避免使用 Swift 特定的泛型集合或在 Objective-C 中不支持的类型。</strong><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使枚举兼容 Objective-C，在swift中Swift会默认自动给后续枚举值递增</span></span><br><span class="line"><span class="keyword">@objc</span> <span class="keyword">enum</span> <span class="title class_">VehicleType</span>: <span class="title class_">Int</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> car <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">case</span> motorcycle</span><br><span class="line">    <span class="keyword">case</span> bicycle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用类替代结构体</span></span><br><span class="line"><span class="keyword">@objc</span>Members <span class="keyword">class</span> <span class="title class_">Vehicle</span>: <span class="title class_">NSObject</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> make: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> model: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> type: <span class="type">VehicleType</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">make</span>: <span class="type">String</span>, <span class="params">model</span>: <span class="type">String</span>, <span class="params">type</span>: <span class="type">VehicleType</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.make <span class="operator">=</span> make</span><br><span class="line">        <span class="keyword">self</span>.model <span class="operator">=</span> model</span><br><span class="line">        <span class="keyword">self</span>.type <span class="operator">=</span> type</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 确保 Garage 类也兼容 Objective-C</span></span><br><span class="line"><span class="keyword">@objc</span>Members <span class="keyword">class</span> <span class="title class_">Garage</span>: <span class="title class_">NSObject</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> vehicles: [<span class="type">Vehicle</span>] <span class="operator">=</span> []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">addVehicle</span>(<span class="keyword">_</span> <span class="params">vehicle</span>: <span class="type">Vehicle</span>) &#123;</span><br><span class="line">        vehicles.append(vehicle)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YourProjectName-Swift.h&quot;</span><br><span class="line"></span><br><span class="line">void useSwiftModelInObjectiveC() &#123;</span><br><span class="line">    Vehicle *myVehicle = [[Vehicle alloc] initWithMake:@&quot;Honda&quot; model:@&quot;Civic&quot; type:VehicleTypeCar];</span><br><span class="line">    Garage *myGarage = [[Garage alloc] init];</span><br><span class="line">    [myGarage addVehicle:myVehicle];  // 现在这行代码将正常工作</span><br><span class="line">    NSLog(@&quot;Vehicle added: %@ %@&quot;, myVehicle.make, myVehicle.model);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/14/%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/" data-id="cmkjw5to1000kgktx9zx697rm" data-title="混合开发" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/15/UILabel%E7%9A%84%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UILabel的常用问题及解决方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/05/10/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">网络接口</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">January 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/18/String-Catalog%E8%B0%83%E7%A0%94/">String Catalog调研</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/26/learn/">learn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

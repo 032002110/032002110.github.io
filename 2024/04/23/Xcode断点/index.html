@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Xcode断点 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1添加自定义断点对于自定义的断点可以增加一些判断条件还能为自定义断点添加行为 1.1Log Message %H:输出断点触发的次数 %B:输出断点的名字 @@:在两个@符号中间可以睡表达式  1.2Debugger Command可以设置调试命令，当断点触发，执行调试命令并输出结果到控制台 1.3Sound触发断点时，播放音效 1.4AppleScript可以设置当断点出发时执行脚本运行结果：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode断点">
+<meta property="og:url" content="http://example.com/2024/04/23/Xcode%E6%96%AD%E7%82%B9/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1添加自定义断点对于自定义的断点可以增加一些判断条件还能为自定义断点添加行为 1.1Log Message %H:输出断点触发的次数 %B:输出断点的名字 @@:在两个@符号中间可以睡表达式  1.2Debugger Command可以设置调试命令，当断点触发，执行调试命令并输出结果到控制台 1.3Sound触发断点时，播放音效 1.4AppleScript可以设置当断点出发时执行脚本运行结果：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/%E6%96%AD%E7%82%B9.png">
+<meta property="og:image" content="http://example.com/images/%E6%96%AD%E7%82%B9_1.png">
+<meta property="og:image" content="http://example.com/images/%E6%96%AD%E7%82%B9_2.png">
+<meta property="og:image" content="http://example.com/images/%E6%96%AD%E7%82%B9_3.png">
+<meta property="og:image" content="http://example.com/images/%E6%96%AD%E7%82%B9_4.png">
+<meta property="article:published_time" content="2024-04-23T03:10:39.000Z">
+<meta property="article:modified_time" content="2026-01-18T15:07:57.781Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%96%AD%E7%82%B9.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Xcode断点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" class="article-date">
+  <time class="dt-published" datetime="2024-04-23T03:10:39.000Z" itemprop="datePublished">2024-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Xcode断点
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/%E6%96%AD%E7%82%B9.png"></p>
+<h2 id="1添加自定义断点"><a href="#1添加自定义断点" class="headerlink" title="1添加自定义断点"></a>1添加自定义断点</h2><p><img src="/images/%E6%96%AD%E7%82%B9_1.png"><br>对于自定义的断点可以增加一些判断条件<br>还能为自定义断点添加行为</p>
+<h2 id="1-1Log-Message"><a href="#1-1Log-Message" class="headerlink" title="1.1Log Message"></a>1.1Log Message</h2><ul>
+<li>%H:输出断点触发的次数</li>
+<li>%B:输出断点的名字</li>
+<li>@@:在两个@符号中间可以睡表达式</li>
+</ul>
+<h2 id="1-2Debugger-Command"><a href="#1-2Debugger-Command" class="headerlink" title="1.2Debugger Command"></a>1.2Debugger Command</h2><p>可以设置调试命令，当断点触发，执行调试命令并输出结果到控制台</p>
+<h2 id="1-3Sound"><a href="#1-3Sound" class="headerlink" title="1.3Sound"></a>1.3Sound</h2><p>触发断点时，播放音效</p>
+<h2 id="1-4AppleScript"><a href="#1-4AppleScript" class="headerlink" title="1.4AppleScript"></a>1.4AppleScript</h2><p>可以设置当断点出发时执行脚本<br><img src="/images/%E6%96%AD%E7%82%B9_2.png"><br>运行结果：<br><img src="/images/%E6%96%AD%E7%82%B9_3.png"></p>
+<h2 id="1-5Shell-Command-Capture-GPU-Frame"><a href="#1-5Shell-Command-Capture-GPU-Frame" class="headerlink" title="1.5Shell Command &amp; Capture GPU Frame"></a>1.5Shell Command &amp; Capture GPU Frame</h2><p>Shell command和AppleScript 类似，只是执行shell脚本<br>Capture GPU Frame 开启后，当断点被触发时可以捕获GPU当前所绘制的帧</p>
+<h1 id="2全局断点"><a href="#2全局断点" class="headerlink" title="2全局断点"></a>2全局断点</h1><p><img src="/images/%E6%96%AD%E7%82%B9_4.png"><br>1Swift Error Breakpoint ：swift项目中使用的全局断点，当添加此断点后，程序会暂停在使用throw抛出异常的代码处。<br>2Exception Breakpoint：用来捕获程序中的异常，当程序发生数组越界，设置了非空参数为nil等问题会停留在异常处。<br>3OpenGL ES Error Breakpoint ：当OpenGL ES发生错误时，程序会停留在错误处。<br>4Symbolic Breakpoint ：符号断点，这是最强大的一种全局断点，系统的方法也可以断住.<br>5Runtime Issue Breakpoint:运行时问题断点：当运用运行时方法出现错误时、程序会暂停在出错处。<br>6constraint Error Breakpoint是约束错误断点，自动布局控件出现约束错误时，添加这个断点后，程序会暂停在出错处，打印错误信息。<br>7Test Failure Breakpoint 是测试错误断点，当出现测试没有通过情况时，添加此断点会，停在失败的测试处。</p>
+<p>作者：潜水的鱼儿<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7013163859833782285">https://juejin.cn/post/7013163859833782285</a><br>来源：稀土掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/23/Xcode%E6%96%AD%E7%82%B9/" data-id="cmkjw5tny0005gktx62sz2bk5" data-title="Xcode断点" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/23/objective-C_1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          objective-C_1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/23/Swift-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Swift_03</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">January 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">April 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/01/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2026/01/18/String-Catalog%E8%B0%83%E7%A0%94/">String Catalog调研</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/26/learn/">learn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/03/bug-%E5%9B%BE%E7%89%87%E5%8F%98%E5%BD%A2/">bug_图片变形</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">第一次实际开发遇到的各种问题总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
